@@ -14,17 +14,18 @@ export default function CompanyList({ sessionData,  logout,openBranchDashboard }
 
     return (
         <View>
-            <Card>
+            <Card  key="CompList-Card">
                 <Card.Title
+                    key="CompList-CardTitle"
                     titleStyle={styles.titleStyle}
                     title={sessionData.head ? "Hi " + sessionData.head.firstName : "Hi"}
                     subtitle="Welcome to SIMS APP"
                     left={(props) => <Avatar.Text size={50} label={sessionData.head ?sessionData.head.firstName.charAt(0) : "SG"} style={styles.avatar} />}
                     right={(props) => <IconButton {...props} icon={require('../../assets/icons/logout.png')} onPress={() => logout()} />}
                 />
-                <Card.Content>
+                <Card.Content  key="CompList-CardContent">
                     <View style={{ height: 20 }}></View>
-                    <List.AccordionGroup>
+                    <List.AccordionGroup key="Comp-List-AccGrp">
                         {sessionData.companies ? sessionData.companies.companyList ? sessionData.companies.companyList.map((company, i) => (
                             <>
                                 <List.Accordion style={styles.accordList} titleStyle={styles.listTitleStyle} title={company.compName} id={company.compName + "_" + i} key={company.compName + "_" + i}>

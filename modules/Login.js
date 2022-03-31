@@ -9,7 +9,7 @@ import { TextInput, Button } from 'react-native-paper';
 
 import * as APIURLS from './helpers/apiconstant';
 import * as FETCHAPI from './helpers/fetchapi';
-import * as REUSABLES from './helpers/reusables';
+import * as REUSABLES from './helpers/reusables'; 
 
 
 import CompanyList from "./components/CompanyList";
@@ -28,6 +28,10 @@ export default function Login({navigation}) {
     
 
     useEffect(() => {
+        if(sessionData===null){
+            REUSABLES.storeSessionData('sessionData', {});
+            setSessionData({});    
+        }
         getSessionData();
     }, []);
 
@@ -87,7 +91,7 @@ export default function Login({navigation}) {
 
     return (
         <>
-            {sessionData.head ? (
+            {sessionData?sessionData.head ? (
                 <>
                     <View style={styles.container2}>
                         <CompanyList  sessionData={sessionData}  logout={logout} openBranchDashboard={openBranchDashboard}/>
@@ -133,7 +137,7 @@ export default function Login({navigation}) {
                         </View>
                     </View>
                 </>
-            )}
+            ):null}
           <FullScreenLoader status={loaderStatus}/>
         </>
 
