@@ -9,28 +9,31 @@ import { TextInput, Button } from 'react-native-paper';
 
 import * as APIURLS from './helpers/apiconstant';
 import * as FETCHAPI from './helpers/fetchapi';
-import * as REUSABLES from './helpers/reusables'; 
+import * as REUSABLES from './helpers/reusables';
 
 
 import CompanyList from "./components/CompanyList";
 import FullScreenLoader from "./reusablecomponents/FullScreenLoader";
+import AlertBar from "./reusablecomponents/AlertBar";
 
 const headers = {
     "Content-Type": "application/json",
 };
 
 
-export default function Login({navigation}) {
+export default function Login({ navigation }) {
     const [userid, setUserid] = useState(null);
     const [password, setPassword] = useState(null);
     const [sessionData, setSessionData] = useState({});
     const [loaderStatus, setLoaderStatus] = useState(false);
-    
+    const [alertBarStatus, setAlertBarStatus] = useState(false);
+    const [alertBarMessage, setAlertBarMessage] = useState(null);
+
 
     useEffect(() => {
-        if(sessionData===null){
+        if (sessionData === null) {
             REUSABLES.storeSessionData('sessionData', {});
-            setSessionData({});    
+            setSessionData({});
         }
         getSessionData();
     }, []);
@@ -38,21 +41,37 @@ export default function Login({navigation}) {
 
 
     const processLogin = async () => {
-        setLoaderStatus(true);
-        try {
-            const Data = {
-                loginId: userid,
-                password: password,
-                ClientInfo: ""
-            };
-            const res = await FETCHAPI.APICALL(APIURLS.APIURL.Login, Data, headers);
-            REUSABLES.storeSessionData('sessionData', await res.data);
-            getSessionData();
-            setLoaderStatus(false);
-        } catch (ex) {
-            console.log("-------> ERROR ex > ", ex);
-            setLoaderStatus(false);
-        }
+        try{
+            if (userid.trim() !== "" && password.trim() !== "") {
+                setLoaderStatus(true);
+                try {
+                    const Data = {
+                        loginId: userid,
+                        password: password,
+                        ClientInfo: ""
+                    };
+                    const res = await FETCHAPI.APICALL(APIURLS.APIURL.Login, Data, headers);
+    
+                    console.log("await res > ", res);
+    
+                    if (res.status === true) {
+                        REUSABLES.storeSessionData('sessionData', await res.data);
+                        getSessionData();
+                        setLoaderStatus(false);
+                    } else {
+                        setLoaderStatus(false);
+                        setAlertBarStatus(true);
+                        setAlertBarMessage("Invalid Credentials");
+                    }
+    
+                } catch (ex) {
+                    console.log("-------> ERROR ex > ", ex);
+                    setLoaderStatus(false);
+                    setAlertBarStatus(true);
+                    setAlertBarMessage("API Error");
+                }
+            }
+        }catch(ex){}
     }
 
     const getSessionData = async () => {
@@ -83,18 +102,20 @@ export default function Login({navigation}) {
         }
     }
 
-    const openBranchDashboard=(branch)=>{
-     console.log("In openBranchDashboard");
-     console.log("branch > ",branch);
-     navigation.navigate('BranchDashboard',branch)
+    const openBranchDashboard = (branch) => {
+        console.log("In openBranchDashboard");
+        console.log("branch > ", branch);
+        navigation.navigate('BranchDashboard', branch)
     }
+
+    const onDismissSnackBar = () => setAlertBarStatus(false);
 
     return (
         <>
-            {sessionData?sessionData.head ? (
+            {sessionData ? sessionData.head ? (
                 <>
                     <View style={styles.container2}>
-                        <CompanyList  sessionData={sessionData}  logout={logout} openBranchDashboard={openBranchDashboard}/>
+                        <CompanyList sessionData={sessionData} logout={logout} openBranchDashboard={openBranchDashboard} />
                     </View>
                 </>
             ) : (
@@ -137,8 +158,9 @@ export default function Login({navigation}) {
                         </View>
                     </View>
                 </>
-            ):null}
-          <FullScreenLoader status={loaderStatus}/>
+            ) : null}
+            <FullScreenLoader status={loaderStatus} />
+            <AlertBar status={alertBarStatus} message={alertBarMessage} onDismissSnackBar={onDismissSnackBar} />
         </>
 
     );
@@ -179,15 +201,15 @@ const styles = StyleSheet.create({
     },
 
     TextInput: {
-        backgroundColor:'#fff',
+        backgroundColor: '#fff',
         width: '100%',
         fontFamily: 'Calibri',
-        borderStyle:'solid',
-        borderWidth:1,
-        height:40,
-        lineHeight:40,
-        borderTopLeftRadius:0,
-        borderTopRightRadius:0
+        borderStyle: 'solid',
+        borderWidth: 1,
+        height: 40,
+        lineHeight: 40,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0
     },
 
     forgot_button: {

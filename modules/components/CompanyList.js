@@ -24,12 +24,12 @@ export default function CompanyList({ sessionData,  logout,openBranchDashboard }
                     right={(props) => <IconButton {...props} icon={require('../../assets/icons/logout.png')} onPress={() => logout()} />}
                 />
                 <Card.Content  key="CompList-CardContent">
-                    <View style={{ height: 20 }}></View>
+                    <View  key="CompList-View" style={{ height: 20 }}></View>
                     <List.AccordionGroup key="Comp-List-AccGrp">
                         {sessionData.companies ? sessionData.companies.companyList ? sessionData.companies.companyList.map((company, i) => (
                             <>
                                 <List.Accordion style={styles.accordList} titleStyle={styles.listTitleStyle} title={company.compName} id={company.compName + "_" + i} key={company.compName + "_" + i}>
-                                    <View style={styles.accordContentArea}>
+                                    <View key={"CompList-View-"+company.compName} style={styles.accordContentArea}>
                                     {company.branchList ? company.branchList.map((branch, j) => (
                                         <>
                                             <TouchableRipple key={"TR_"+company.compName+"_"+i+"_"+"_"+j} rippleColor="rgba(104, 143, 173)" onPress={() => openBranchDashboard(branch)} >
