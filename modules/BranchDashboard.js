@@ -71,6 +71,13 @@ export default function BranchDashboard({ route, navigation }) {
             <View style={styles.container}>
                 <SafeAreaView>
                     <ScrollView>
+
+                        <Button mode="contained" onPress={() => console.log('Pressed')}>
+                           Link
+                        </Button>
+
+                        
+
                         <View style={styles.rowBox}>
                             <View style={styles.col6}>
                                 <View style={styles.marginLeftRight5}>
@@ -86,8 +93,6 @@ export default function BranchDashboard({ route, navigation }) {
                                     </TouchableRipple>
                                 </View>
                             </View>
-                        </View>
-                        <View style={styles.rowBox}>
                             <View style={styles.col6}>
                                 <View style={styles.marginLeftRight5}>
                                     <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 1")}>
@@ -102,8 +107,6 @@ export default function BranchDashboard({ route, navigation }) {
                                     </TouchableRipple>
                                 </View>
                             </View>
-                        </View>
-                        <View style={styles.rowBox}>
                             <View style={styles.col6}>
                                 <View style={styles.marginLeftRight5}>
                                     <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 1")}>
@@ -119,7 +122,6 @@ export default function BranchDashboard({ route, navigation }) {
                                 </View>
                             </View>
                         </View>
-
                     </ScrollView>
                 </SafeAreaView>
             </View>
