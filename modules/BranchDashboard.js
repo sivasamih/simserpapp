@@ -18,6 +18,7 @@ import * as REUSABLES from './helpers/reusables';
 
 import FullScreenLoader from "./reusablecomponents/FullScreenLoader";
 import TopBanner from "./reusablecomponents/TopBanner";
+import SectionComponent from "./reusablecomponents/SectionComponent";
 
 const headers = {
     "Content-Type": "application/json",
@@ -58,15 +59,10 @@ export default function BranchDashboard({ route, navigation }) {
                 visible={visibleBanner}
                 onPress={() => setVisibleBanner(false)} /> */}
 
-            <View style={{flex:0.5,backgroundColor:'pink',borderBottomLeftRadius:250,borderBottomRightRadius:250}}>
-        
-            </View>    
-
+            <SectionComponent title="ACTION MENU"/>
             <View style={styles.container}>
                 <SafeAreaView>
-                    <ScrollView>
-                        <View style={{ height: 10 }}></View>
-
+                    <ScrollView>                       
                         <View style={styles.rowBox}>
                             <View style={styles.col6}>
                                 <View style={styles.marginLeftRight5}>
@@ -83,11 +79,57 @@ export default function BranchDashboard({ route, navigation }) {
                                 </View>
                             </View>
                         </View>
+                        <View style={styles.rowBox}>
+                            <View style={styles.col6}>
+                                <View style={styles.marginLeftRight5}>
+                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 1")}>
+                                        <Text style={styles.menuCardTitle}>Menu 3</Text>
+                                    </TouchableRipple>
+                                </View>
+                            </View>
+                            <View style={styles.col6}>
+                                <View style={styles.marginLeftRight5}>
+                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 2")}>
+                                        <Text style={styles.menuCardTitle}>Menu 4</Text>
+                                    </TouchableRipple>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.rowBox}>
+                            <View style={styles.col6}>
+                                <View style={styles.marginLeftRight5}>
+                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 1")}>
+                                        <Text style={styles.menuCardTitle}>Menu 3</Text>
+                                    </TouchableRipple>
+                                </View>
+                            </View>
+                            <View style={styles.col6}>
+                                <View style={styles.marginLeftRight5}>
+                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 2")}>
+                                        <Text style={styles.menuCardTitle}>Menu 4</Text>
+                                    </TouchableRipple>
+                                </View>
+                            </View>
+                        </View>
+                        
+                    </ScrollView>
+                </SafeAreaView>
+            </View>
 
-                       
-                  
-                     
+            <SectionComponent title="SECTION 2"/>
+            <View style={styles.container}>
+                <SafeAreaView>
+                    <ScrollView>
+                        <View style={{ height: 10 }}></View>
 
+                        <View style={styles.rowBox}>
+                            <View style={styles.col6}>
+
+                            </View>
+                            <View style={styles.col6}>
+
+                            </View>
+                        </View>
                     </ScrollView>
                 </SafeAreaView>
             </View>
@@ -129,7 +171,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 4,
-        backgroundColor: 'powderblue'
+        backgroundColor: '#b3e5fc'
     },
     menuCardTitle: {
         fontSize: 18,
