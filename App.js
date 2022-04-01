@@ -23,9 +23,9 @@ function LoginScreen({ navigation }) {
   );
 }
 
-function BranchDashboardScreen({ navigation }) {
+function BranchDashboardScreen({route,navigation }) {
   return (
-    <BranchDashboard navigation={navigation} />
+    <BranchDashboard navigation={navigation} route={route} />
   );
 }
 
