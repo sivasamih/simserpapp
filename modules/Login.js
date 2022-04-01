@@ -124,6 +124,7 @@ export default function Login({ navigation }) {
 
     return (
         <>
+        
             {sessionData ? sessionData.head ? (
                 <>
                     <View style={styles.container2}>
@@ -132,10 +133,16 @@ export default function Login({ navigation }) {
                 </>
             ) : (
                 <>
-                    <View style={styles.container}>
-                        <Image style={styles.image} source={require("../assets/B1.png")} />
+                <View style={{flex:1,backgroundColor:'#e0f2f1',borderBottomLeftRadius:250,borderBottomRightRadius:250}}>
+                    <View style={{marginTop:150,alignItems:'center'}}>
+                    <Image style={styles.image} source={require("../assets/B1.png")} />
+                    </View>
+                </View>
+                <View style={styles.container}>
+                       
                         <View style={styles.inputView}>
                             <TextInput
+                                placeholder="User ID"
                                 style={styles.TextInput}
                                 selectionColor="#0072bc"
                                 underlineColor={null}
@@ -148,6 +155,7 @@ export default function Login({ navigation }) {
 
                         <View style={styles.inputView}>
                             <TextInput
+                                placeholder="Password"
                                 style={styles.TextInput}
                                 selectionColor="#0072bc"
                                 underlineColor={null}
@@ -181,7 +189,7 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        // backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",
         fontFamily: 'Calibri'
