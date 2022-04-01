@@ -11,13 +11,13 @@ import { Avatar, Card, IconButton, List, TouchableRipple, BottomNavigation } fro
 
 const GateEntrySection = () => <>
     <View>
-        <Text>GateEntrySection</Text>
+        <Text>Gate Entry Section</Text>
     </View>
 </>;
 
 const GateEntryStats = () => <>
     <View>
-        <Text>GateEntryStats</Text>
+        <Text>Gate Entry Stats</Text>
     </View>
 </>;;
 

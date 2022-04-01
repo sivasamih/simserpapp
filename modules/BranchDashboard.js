@@ -33,7 +33,7 @@ export default function BranchDashboard({ route, navigation }) {
 
 
     useEffect(() => {
-        console.log("route > ",route);
+        console.log("route > ", route);
         // console.log("navigation > ",navigation);
         getSessionData();
     }, []);
@@ -52,7 +52,7 @@ export default function BranchDashboard({ route, navigation }) {
         switch (input) {
             case "Gate Entry":
                 console.log("Clicking on  > route > ", route);
-               navigation.navigate('GateEntry',route)
+                navigation.navigate('GateEntry', route)
                 break;
             default:
                 break;
@@ -67,10 +67,10 @@ export default function BranchDashboard({ route, navigation }) {
                 visible={visibleBanner}
                 onPress={() => setVisibleBanner(false)} /> */}
 
-            <SectionComponent title="ACTION MENU"/>
+            <SectionComponent title="ACTION MENU" />
             <View style={styles.container}>
                 <SafeAreaView>
-                    <ScrollView>                       
+                    <ScrollView>
                         <View style={styles.rowBox}>
                             <View style={styles.col6}>
                                 <View style={styles.marginLeftRight5}>
@@ -82,7 +82,23 @@ export default function BranchDashboard({ route, navigation }) {
                             <View style={styles.col6}>
                                 <View style={styles.marginLeftRight5}>
                                     <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 2")}>
-                                        <Text style={styles.menuCardTitle}>Stock Scan</Text>
+                                        <Text style={styles.menuCardTitle}>Stock In</Text>
+                                    </TouchableRipple>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.rowBox}>
+                            <View style={styles.col6}>
+                                <View style={styles.marginLeftRight5}>
+                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 1")}>
+                                        <Text style={styles.menuCardTitle}>Stock Out</Text>
+                                    </TouchableRipple>
+                                </View>
+                            </View>
+                            <View style={styles.col6}>
+                                <View style={styles.marginLeftRight5}>
+                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 2")}>
+                                        <Text style={styles.menuCardTitle}>PO List</Text>
                                     </TouchableRipple>
                                 </View>
                             </View>
@@ -103,28 +119,12 @@ export default function BranchDashboard({ route, navigation }) {
                                 </View>
                             </View>
                         </View>
-                        <View style={styles.rowBox}>
-                            <View style={styles.col6}>
-                                <View style={styles.marginLeftRight5}>
-                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 1")}>
-                                        <Text style={styles.menuCardTitle}>Menu 3</Text>
-                                    </TouchableRipple>
-                                </View>
-                            </View>
-                            <View style={styles.col6}>
-                                <View style={styles.marginLeftRight5}>
-                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 2")}>
-                                        <Text style={styles.menuCardTitle}>Menu 4</Text>
-                                    </TouchableRipple>
-                                </View>
-                            </View>
-                        </View>
-                        
+
                     </ScrollView>
                 </SafeAreaView>
             </View>
 
-            <SectionComponent title="SECTION 2"/>
+            <SectionComponent title="SECTION 2" />
             <View style={styles.container}>
                 <SafeAreaView>
                     <ScrollView>
@@ -141,7 +141,7 @@ export default function BranchDashboard({ route, navigation }) {
                     </ScrollView>
                 </SafeAreaView>
             </View>
-            
+
 
             <FullScreenLoader status={loaderStatus} />
         </>
