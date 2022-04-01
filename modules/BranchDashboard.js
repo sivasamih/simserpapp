@@ -33,7 +33,7 @@ export default function BranchDashboard({ route, navigation }) {
 
 
     useEffect(() => {
-        // console.log("route > ",route);
+        console.log("route > ",route);
         // console.log("navigation > ",navigation);
         getSessionData();
     }, []);
@@ -48,7 +48,15 @@ export default function BranchDashboard({ route, navigation }) {
     }
 
     const optionClicked = (input) => {
-        console.log("Clicking on  > ", input)
+        console.log("Clicking on  > ", input);
+        switch (input) {
+            case "Gate Entry":
+                console.log("Clicking on  > route > ", route);
+               navigation.navigate('GateEntry',route)
+                break;
+            default:
+                break;
+        }
     }
 
 
@@ -66,7 +74,7 @@ export default function BranchDashboard({ route, navigation }) {
                         <View style={styles.rowBox}>
                             <View style={styles.col6}>
                                 <View style={styles.marginLeftRight5}>
-                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 1")}>
+                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("Gate Entry")}>
                                         <Text style={styles.menuCardTitle}>Gate Entry</Text>
                                     </TouchableRipple>
                                 </View>

@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 
 import Login from './modules/Login';
 import BranchDashboard from './modules/BranchDashboard';
-
+import GateEntry from "./modules/components/GateEntry";
 
 
 // import Barcodescanner from './modules/Barcodescanner';
@@ -26,6 +26,12 @@ function LoginScreen({ navigation }) {
 function BranchDashboardScreen({route,navigation }) {
   return (
     <BranchDashboard navigation={navigation} route={route} />
+  );
+}
+
+function GateEntryScreen({route,navigation }) {
+  return (
+    <GateEntry navigation={navigation} route={route} />
   );
 }
 
@@ -94,6 +100,13 @@ export default function App() {
             component={BranchDashboardScreen}
             headerTitleStyle={styles.headerTitleStyle}
             options={({ route }) => ({ title: route.params.branchName + " - " + route.params.name })}
+          />
+
+          <Stack.Screen
+            name="GateEntry"
+            component={GateEntryScreen}
+            headerTitleStyle={styles.headerTitleStyle}
+            options={({ route }) => ({ title: "Gate Entry" })}
           />
 
 
