@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
-    Text,
     View,
-    Image,
+    SafeAreaView,
+    ScrollView
 } from "react-native";
 
 import { TextInput, Button } from 'react-native-paper';
@@ -37,17 +37,30 @@ export default function BranchDashboard(props) {
             console.log("-------> getSessionData ex > ", ex);
         }
     }
-   
+
 
     return (
         <>
-          
-          <FullScreenLoader status={loaderStatus}/>
+            <View style={styles.container}>
+                <SafeAreaView>
+                    <ScrollView>
+
+                    </ScrollView>
+                </SafeAreaView>
+            </View>
+
+            <FullScreenLoader status={loaderStatus} />
         </>
 
     );
 }
 
 const styles = StyleSheet.create({
-  
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: 'Calibri'
+    },
 });

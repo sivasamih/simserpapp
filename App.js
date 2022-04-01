@@ -60,7 +60,7 @@ export default function App() {
         }
       }
     }
-    setGreeting("Hi! " + greetings);
+    setGreeting(greetings);
   }
 
   return (

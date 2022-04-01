@@ -30,7 +30,7 @@ export default function Login({ navigation }) {
     const [alertBarMessage, setAlertBarMessage] = useState(null);
 
 
-    useEffect(() => {
+    useEffect(() => {         
         if (sessionData === null) {
             REUSABLES.storeSessionData('sessionData', {});
             setSessionData({});
@@ -55,10 +55,22 @@ export default function Login({ navigation }) {
                     console.log("await res > ", res);
     
                     if (res.status === true) {
-                        REUSABLES.storeSessionData('sessionData', await res.data);
-                        getSessionData();
-                        setLoaderStatus(false);
+                        let data=await res.data;
+                        if(data.head){
+                            if(data.head.status!=="UU"){
+                                REUSABLES.storeSessionData('sessionData', await res.data);
+                                getSessionData();
+                                setLoaderStatus(false);
+                            }else{
+                                setPassword(null);
+                                setLoaderStatus(false);
+                                setAlertBarStatus(true);
+                                setAlertBarMessage("Invalid Credentials");
+                            }
+                        }
+                        
                     } else {
+                        setPassword(null);
                         setLoaderStatus(false);
                         setAlertBarStatus(true);
                         setAlertBarMessage("Invalid Credentials");

@@ -10,13 +10,12 @@ import {Snackbar  } from 'react-native-paper';
 export default function AlertBar({ status, message,onDismissSnackBar }) {
     return (
         <Snackbar
+        style={styles.snackbar}
             visible={status}
             onDismiss={onDismissSnackBar}
             action={{
                 label: 'Close',
-                onPress: () => {
-                    // Do something
-                },
+                onPress: () => onDismissSnackBar,
             }}>
             {message}
         </Snackbar>
@@ -30,5 +29,9 @@ const styles = StyleSheet.create({
         opacity: 0.6,
         marginTop: -50,
         alignItems: 'center'
+    },
+    snackbar:{
+        backgroundColor:'#004d40',
     }
+
 });
