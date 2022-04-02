@@ -72,12 +72,6 @@ export default function BranchDashboard({ route, navigation }) {
                 <SafeAreaView>
                     <ScrollView>
 
-                        <Button mode="contained" onPress={() => console.log('Pressed')}>
-                           Link
-                        </Button>
-
-                        
-
                         <View style={styles.rowBox}>
                             <View style={styles.col6}>
                                 <View style={styles.marginLeftRight5}>
