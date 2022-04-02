@@ -6,7 +6,6 @@ import {
 import { IconButton,List } from 'react-native-paper';
 
 const ModalComponent = ({ modalVisible, setModalVisible, modalContent }) => {
-    //   const [modalVisible, setModalVisible] = useState(false);
     return (
         <Modal
             animationType="slide"
@@ -35,8 +34,6 @@ const ModalComponent = ({ modalVisible, setModalVisible, modalContent }) => {
                         </SafeAreaView>
                         <View style={{ height: 30 }}></View>
                     </View>
-
-
                 </View>
             </View>
         </Modal>
