@@ -12,7 +12,7 @@ import { BottomNavigation, List,IconButton } from 'react-native-paper';
 
 import SectionComponent from "../reusablecomponents/SectionComponent";
 import CalenderComponent from "../reusablecomponents/CalenderComponent";
-
+import ModalComponent from "../reusablecomponents/ModalComponent";
 
 
 export default function GateEntry({ route, navigation }) {
@@ -22,6 +22,7 @@ export default function GateEntry({ route, navigation }) {
         { key: 'section2', title: 'Details', icon: 'gate-arrow-right' },
     ]);
     const [gateEntryList, setGateEntryList] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         console.log("---------------------------------------------------------");
@@ -71,6 +72,7 @@ export default function GateEntry({ route, navigation }) {
 
    const viewGateEntryList=()=>{
        console.log("In viewGateEntryList");
+       setModalVisible(true);
    }
 
     const GateEntrySection = () => <>
@@ -85,17 +87,39 @@ export default function GateEntry({ route, navigation }) {
     </>;
 
     const GateEntryStats = () => <>
+        <ModalComponent
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            modalContent={
+                <>
+                    {gateEntryList.length > 0 ? gateEntryList.map((item, i) => (
+                        <List.Item
+                            title={item.title}
+                            description={item.desc + " | " + item.time}
+                            left={props => <List.Icon {...props} icon="package-variant-closed" />}
+                        />
+                    )) : (
+                        <List.Item
+                            title="No Entry"
+                            description=""
+                            left={props => <List.Icon {...props} icon="package-variant-closed" />}
+                        />
+                    )}
+                </>
+            }
+        />
+
         <View style={styles.container}>
             <View style={styles.marginLeftRight5}>
                 <CalenderComponent />
-                <View style={{height:20}}></View>
+                <View style={{ height: 20 }}></View>
                 <SectionComponent title="Details" />
                 <SafeAreaView>
                     <ScrollView>
                         <View style={{ marginLeft: 20 }}>
-                        {gateEntryList.length > 0 ?(
+                            {gateEntryList.length > 0 ? (
                                 <List.Item
-                                    title={"Total "+gateEntryList.length+" entries available"}
+                                    title={"Total " + gateEntryList.length + " entries available"}
                                     description=""
                                     left={props => <List.Icon {...props} icon="package-variant-closed" />}
                                     right={props => (
@@ -117,19 +141,7 @@ export default function GateEntry({ route, navigation }) {
                                 />
                             )}
 
-                            {/* {gateEntryList.length > 0 ? gateEntryList.map((item, i) => (
-                                <List.Item
-                                    title={item.title}
-                                    description={item.desc + " | " + item.time}
-                                    left={props => <List.Icon {...props} icon="package-variant-closed" />}
-                                />
-                            )) : (
-                                <List.Item
-                                    title="No Entry"
-                                    description=""
-                                    left={props => <List.Icon {...props} icon="package-variant-closed" />}
-                                />
-                            )} */}
+
 
                         </View>
                     </ScrollView>
@@ -141,22 +153,20 @@ export default function GateEntry({ route, navigation }) {
     </>;
 
 
-    const renderScene = BottomNavigation.SceneMap({
-        section1: GateEntrySection,
-        section2: GateEntryStats,
-    });
-
-
-
-
     return (
-        <BottomNavigation
-            barStyle={{ backgroundColor: '#39b54a' }}
-            activeColor="#000"
-            navigationState={{ index, routes }}
-            onIndexChange={setIndex}
-            renderScene={renderScene}
-        />
+        <>
+            <BottomNavigation
+                barStyle={{ backgroundColor: '#39b54a' }}
+                activeColor="#000"
+                navigationState={{ index, routes }}
+                onIndexChange={setIndex}
+                renderScene={BottomNavigation.SceneMap({
+                    section1: GateEntrySection,
+                    section2: GateEntryStats,
+                })
+                }
+            />
+        </>
     );
 }
 
