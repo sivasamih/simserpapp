@@ -110,7 +110,6 @@ export default function GateEntry({ route, navigation }) {
                 </>
             }
         />
-
         <View style={styles.container}>
             <View style={styles.marginLeftRight5}>
                 <CalenderComponent selectedDate={selectedDate}  setSelectedDate={setSelectedDate} />
@@ -158,7 +157,7 @@ export default function GateEntry({ route, navigation }) {
     return (
         <>
             <BottomNavigation
-                barStyle={{ backgroundColor: '#39b54a' }}
+                barStyle={{ backgroundColor: '#009688' }}
                 activeColor="#000"
                 navigationState={{ index, routes }}
                 onIndexChange={setIndex}
