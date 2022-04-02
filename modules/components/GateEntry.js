@@ -23,6 +23,7 @@ export default function GateEntry({ route, navigation }) {
     ]);
     const [gateEntryList, setGateEntryList] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
+    const [selectedDate, setSelectedDate] = useState('2022-04-02');
 
     useEffect(() => {
         console.log("---------------------------------------------------------");
@@ -88,6 +89,7 @@ export default function GateEntry({ route, navigation }) {
 
     const GateEntryStats = () => <>
         <ModalComponent
+            title={"Gate Entries on "+selectedDate}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
             modalContent={
@@ -111,7 +113,7 @@ export default function GateEntry({ route, navigation }) {
 
         <View style={styles.container}>
             <View style={styles.marginLeftRight5}>
-                <CalenderComponent />
+                <CalenderComponent selectedDate={selectedDate}  setSelectedDate={setSelectedDate} />
                 <View style={{ height: 20 }}></View>
                 <SectionComponent title="Details" />
                 <SafeAreaView>

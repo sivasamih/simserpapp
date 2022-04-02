@@ -3,37 +3,48 @@ import {
     Alert, Modal, StyleSheet, Text, Pressable, View, SafeAreaView,
     ScrollView,
 } from "react-native";
-import { IconButton,List } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 
-const ModalComponent = ({ modalVisible, setModalVisible, modalContent }) => {
+const ModalComponent = ({ modalVisible, setModalVisible, modalContent,title }) => {
     return (
         <Modal
             animationType="slide"
-            transparent={true}
+            transparent={false}
             visible={modalVisible}
             onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
                 setModalVisible(!modalVisible);
             }}
         >
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <View style={{ alignItems: 'flex-end', textAlign: 'right' }}>
-                        <IconButton
-                            icon="close"
-                            color="#0072bc"
-                            size={20}
-                            onPress={() => setModalVisible(!modalVisible)}
-                        />
+                    <View style={styles.rowBox}>
+                        <View style={styles.col8}>
+                            <View style={{ alignItems: 'flex-start', textAlign: 'left' }}>
+                                <View style={{ marginLeft: 15, marginTop: 5 }}>
+                                    <Text style={{ fontSize: 15,letterSpacing:1, color:'#0072bc' }}>{title}</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.col2}>
+                            <View style={{ alignItems: 'flex-end', textAlign: 'right' }}>
+                                <IconButton
+                                    icon="close"
+                                    color="#0072bc"
+                                    size={20}
+                                    onPress={() => setModalVisible(!modalVisible)}
+                                />
+                            </View>
+                        </View>
                     </View>
-                    <View style={{height:350}}>
+                    <View style={{ height: 35 }}></View>
+                    <View style={{ height: 400 }}>
                         <SafeAreaView>
                             <ScrollView>
                                 {modalContent}
                             </ScrollView>
                         </SafeAreaView>
-                        <View style={{ height: 30 }}></View>
                     </View>
+                    <View style={{ height: 15 }}></View>
                 </View>
             </View>
         </Modal>
@@ -74,7 +85,20 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: "center"
-    }
+    },
+    rowBox: {
+        flex: 1,
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    col8: {
+        width: '80%',
+        height: 90
+    },
+    col2: {
+        width: '20%',
+        height: 90
+    },
 });
 
 export default ModalComponent;
