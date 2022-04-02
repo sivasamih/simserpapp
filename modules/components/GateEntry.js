@@ -7,7 +7,7 @@ import {
     ScrollView,
     TouchableHighlight
 } from "react-native";
-import { BottomNavigation, List } from 'react-native-paper';
+import { BottomNavigation, List,IconButton } from 'react-native-paper';
 
 
 import SectionComponent from "../reusablecomponents/SectionComponent";
@@ -100,10 +100,12 @@ export default function GateEntry({ route, navigation }) {
                                     left={props => <List.Icon {...props} icon="package-variant-closed" />}
                                     right={props => (
                                         <>
-                                        <TouchableHighlight onPress={()=>viewGateEntryList()}>
-                                          <List.Icon {...props} icon="eye" color="#0072bc"/>
-                                        </TouchableHighlight>
-                                        
+                                            <IconButton
+                                                icon="eye"
+                                                color="#0072bc"
+                                                size={20}
+                                                onPress={() => viewGateEntryList()}
+                                            />
                                         </>
                                     )}
                                 />
