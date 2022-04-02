@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     StyleSheet,
     View,
@@ -9,6 +9,8 @@ import {
 } from "react-native";
 
 import { TextInput, Button, Surface, TouchableRipple } from 'react-native-paper';
+
+
 
 import Logo from '../assets/B1.png';
 import * as APIURLS from './helpers/apiconstant';
@@ -31,12 +33,18 @@ export default function BranchDashboard({ route, navigation }) {
     const [visibleBanner, setVisibleBanner] = React.useState(true);
     const [bannerMessage, setBannerMessage] = React.useState("Notice notification will be shown here...");
 
+    
 
     useEffect(() => {
-        console.log("route > ", route);
+
+        
+
+      //  console.log("route > ", route);
         // console.log("navigation > ",navigation);
         getSessionData();
     }, []);
+
+  
 
     const getSessionData = async () => {
         try {
@@ -184,3 +192,7 @@ const styles = StyleSheet.create({
         letterSpacing: 1.2
     }
 });
+
+
+ 
+

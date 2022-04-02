@@ -11,6 +11,7 @@ import { Avatar, Card, IconButton, List, TouchableRipple } from 'react-native-pa
 export default function CompanyList({ sessionData, logout, openBranchDashboard }) {
 
     useEffect(() => {
+        
     }, []);
 
 

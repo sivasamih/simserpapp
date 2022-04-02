@@ -30,10 +30,14 @@ export default function Login({ navigation }) {
     const [alertBarMessage, setAlertBarMessage] = useState(null);
 
 
-    useEffect(() => {         
+    useEffect(() => {    
+        console.log("Hi samihan ");     
+        console.log("sessionData > ",sessionData);     
         if (sessionData === null) {
-            REUSABLES.storeSessionData('sessionData', {});
+            REUSABLES.storeSessionData('sessionData', {});  
             setSessionData({});
+        }else{
+           // getSessionData();
         }
         getSessionData();
     }, []);
@@ -124,8 +128,7 @@ export default function Login({ navigation }) {
 
     return (
         <>
-        
-            {sessionData ? sessionData.head ? (
+            {sessionData &&  sessionData!=={}? sessionData.head ? (
                 <>
                     <View style={styles.container2}>
                         <CompanyList sessionData={sessionData} logout={logout} openBranchDashboard={openBranchDashboard} />

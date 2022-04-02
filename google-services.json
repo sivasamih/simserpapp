@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "58155424929",
+    "project_id": "simserp-c2215",
+    "storage_bucket": "simserp-c2215.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58155424929:android:b6ce62def4af9866ed24e0",
+        "android_client_info": {
+          "package_name": "com.siva.simsErpApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58155424929-0iqhgplmmr9nag6fpchfe5gpecqnmp3o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN1wjhOTzdUgWGoQQdvrhZZDgp_dosIUk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58155424929-0iqhgplmmr9nag6fpchfe5gpecqnmp3o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
