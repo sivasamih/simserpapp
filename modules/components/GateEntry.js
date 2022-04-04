@@ -5,13 +5,19 @@ import {
     Text,
     SafeAreaView,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
 } from "react-native";
-import { BottomNavigation, List, IconButton } from 'react-native-paper';
+import { BottomNavigation, List, IconButton, TextInput } from 'react-native-paper';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from "moment";
 
 import SectionComponent from "../reusablecomponents/SectionComponent";
 import CalenderComponent from "../reusablecomponents/CalenderComponent";
 import ModalComponent from "../reusablecomponents/ModalComponent";
+
+const today = moment().format("YYYY-MM-DD");
+
+const currentTime = moment().format('LT');
 
 
 export default function GateEntry({ route, navigation }) {
@@ -24,6 +30,13 @@ export default function GateEntry({ route, navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState('2022-04-02');
 
+
+    const [showDatePopUp, setShowDatePopUp] = useState(false);
+    const [dateTimeMode, setdateTimeMode] = useState(null);
+    const [entryDate, setEntryDate] = useState(new Date());
+    const [entryTime, setEntryTime] = useState(new Date());
+    const [selectedEntryDate, setSelectedEntryDate] = useState(today);
+    const [selectedEntryTime, setSelectedEntryTime] = useState(currentTime);
     const [supplierInput, setSupplierInput] = useState('');
     const [supplierList, setSupplierList] = useState([]);
 
@@ -76,22 +89,97 @@ export default function GateEntry({ route, navigation }) {
 
     }, []);
 
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setShowDatePopUp(false);
+        setEntryDate(currentDate);
+        console.log("----------> currentDate > ", currentDate);
+        switch (dateTimeMode) {
+            case "date":
+                setSelectedEntryDate(moment(currentDate).format("YYYY-MM-DD"));
+                break;
+            case "time":
+                setSelectedEntryTime(moment(currentDate).format('LT'));
+                break;
+            default:
+                break;
+        }
+
+    };
+
+    const showMode = (currentMode) => {
+        switch (currentMode) {
+            case "date":
+                setdateTimeMode(currentMode);
+                setShowDatePopUp(true);
+                break;
+            case "time":
+                setdateTimeMode(currentMode);
+                setShowDatePopUp(true);
+                break;
+            default:
+                break;
+        }
+    };
+
     const viewGateEntryList = () => {
         console.log("In viewGateEntryList");
         setModalVisible(true);
     }
 
     const GateEntrySection = () => <>
+        {showDatePopUp && (
+            <DateTimePicker
+                style={styles.dateSelector}
+                mode={dateTimeMode}
+                value={entryDate}
+                onChange={onChange} />
+        )}
         <View style={styles.container}>
             <View style={styles.marginLeftRight5}>
                 <SectionComponent title="Take Entry" />
                 <View style={{ marginLeft: 9 }}>
-                    <View>
-                        <Text>Gate Entry Insert.....</Text>
-                    </View>
-                    <View>
+                    <SafeAreaView>
+                        <ScrollView>
+                            <View style={{ height: 10 }}></View>
+                            <View style={styles.rowBox}>
+                                <View style={styles.col6}>
+                                    <TextInput
+                                        placeholder="Select Date"
+                                        selectionColor={null}
+                                        underlineColor={null}
+                                        activeUnderlineColor="#000"
+                                        value={selectedEntryDate}
+                                        disabled={true}
+                                        right={<TextInput.Icon onPress={(e) => showMode('date')} name="calendar-range" />}
+                                    />
+                                </View>
+                                <View style={styles.colgap}></View>
+                                <View style={styles.col6}>
+                                    <TextInput
+                                        placeholder="Select Time"
+                                        selectionColor={null}
+                                        underlineColor={null}
+                                        activeUnderlineColor="#000"
+                                        value={selectedEntryTime}
+                                        disabled={true}
+                                        right={<TextInput.Icon onPress={(e) => showMode('time')} name="update" />}
+                                    />
+                                </View>
+                            </View>
 
-                    </View>
+                            <View style={styles.rowBox}>
+                                <View style={styles.col12}>
+
+
+
+
+                                </View>
+                            </View>
+
+                        </ScrollView>
+                    </SafeAreaView>
                 </View>
             </View>
         </View>
@@ -193,5 +281,38 @@ const styles = StyleSheet.create({
     marginLeftRight5: {
         marginLeft: 5,
         marginRight: 5
+    },
+    container1: {
+        flex: 1,
+        backgroundColor: "#f5f5f5",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: 'Calibri'
+    },
+    rowBox: {
+        flex: 1,
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    col12: {
+        width: '100%',
+        height: 90
+    },
+    colgap: {
+        width: '1.5%',
+        height: 90
+    },
+    col6: {
+        width: '48.5%',
+        height: 90
+    },
+    dateSelector: {
+        display: "none"
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
     },
 });
