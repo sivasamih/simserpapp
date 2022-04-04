@@ -7,7 +7,7 @@ import {
     ScrollView,
     TouchableOpacity,
 } from "react-native";
-import { BottomNavigation, List, IconButton, TextInput } from 'react-native-paper';
+import { BottomNavigation, List, IconButton, TextInput,Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 
@@ -29,16 +29,6 @@ export default function GateEntry({ route, navigation }) {
     const [gateEntryList, setGateEntryList] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState('2022-04-02');
-
-
-    const [showDatePopUp, setShowDatePopUp] = useState(false);
-    const [dateTimeMode, setdateTimeMode] = useState(null);
-    const [entryDate, setEntryDate] = useState(new Date());
-    const [entryTime, setEntryTime] = useState(new Date());
-    const [selectedEntryDate, setSelectedEntryDate] = useState(today);
-    const [selectedEntryTime, setSelectedEntryTime] = useState(currentTime);
-    const [supplierInput, setSupplierInput] = useState('');
-    const [supplierList, setSupplierList] = useState([]);
 
     useEffect(() => {
         console.log("---------------------------------------------------------");
@@ -89,101 +79,184 @@ export default function GateEntry({ route, navigation }) {
 
     }, []);
 
+    const updateInput = (inputValue) => {
+        console.log("updateInput > ",inputValue);
+      };
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate;
-        setShowDatePopUp(false);
-        setEntryDate(currentDate);
-        console.log("----------> currentDate > ", currentDate);
-        switch (dateTimeMode) {
-            case "date":
-                setSelectedEntryDate(moment(currentDate).format("YYYY-MM-DD"));
-                break;
-            case "time":
-                setSelectedEntryTime(moment(currentDate).format('LT'));
-                break;
-            default:
-                break;
-        }
-
-    };
-
-    const showMode = (currentMode) => {
-        switch (currentMode) {
-            case "date":
-                setdateTimeMode(currentMode);
-                setShowDatePopUp(true);
-                break;
-            case "time":
-                setdateTimeMode(currentMode);
-                setShowDatePopUp(true);
-                break;
-            default:
-                break;
-        }
-    };
+      const handleChange = (e) => {
+        console.log("handleChange > e > ",e);
+      };
 
     const viewGateEntryList = () => {
         console.log("In viewGateEntryList");
         setModalVisible(true);
     }
 
-    const GateEntrySection = () => <>
-        {showDatePopUp && (
-            <DateTimePicker
-                style={styles.dateSelector}
-                mode={dateTimeMode}
-                value={entryDate}
-                onChange={onChange} />
-        )}
-        <View style={styles.container}>
-            <View style={styles.marginLeftRight5}>
-                <SectionComponent title="Take Entry" />
-                <View style={{ marginLeft: 9 }}>
-                    <SafeAreaView>
-                        <ScrollView>
-                            <View style={{ height: 10 }}></View>
-                            <View style={styles.rowBox}>
-                                <View style={styles.col6}>
-                                    <TextInput
-                                        placeholder="Select Date"
-                                        selectionColor={null}
-                                        underlineColor={null}
-                                        activeUnderlineColor="#000"
-                                        value={selectedEntryDate}
-                                        disabled={true}
-                                        right={<TextInput.Icon onPress={(e) => showMode('date')} name="calendar-range" />}
-                                    />
-                                </View>
-                                <View style={styles.colgap}></View>
-                                <View style={styles.col6}>
-                                    <TextInput
-                                        placeholder="Select Time"
-                                        selectionColor={null}
-                                        underlineColor={null}
-                                        activeUnderlineColor="#000"
-                                        value={selectedEntryTime}
-                                        disabled={true}
-                                        right={<TextInput.Icon onPress={(e) => showMode('time')} name="update" />}
-                                    />
-                                </View>
-                            </View>
-
-                            <View style={styles.rowBox}>
-                                <View style={styles.col12}>
+    const GateEntrySection = () => {
+       
 
 
+        const [showDatePopUp, setShowDatePopUp] = useState(false);
+        const [dateTimeMode, setdateTimeMode] = useState(null);
+        const [entryDate, setEntryDate] = useState(new Date());
+        const [entryTime, setEntryTime] = useState(new Date());
+        const [selectedEntryDate, setSelectedEntryDate] = useState(today);
+        const [selectedEntryTime, setSelectedEntryTime] = useState(currentTime);
+        const [vehicleNo, setVehicleNo] = useState('');
+        const [driverName, setDriverName] = useState('');
+        const [refNo, setRefNo] = useState('');
+        const [deliverTo, DeliverTo] = useState('');
+        
+
+        const [supplierInput, setSupplierInput] = useState('');
+        const [supplierList, setSupplierList] = useState([]);
 
 
-                                </View>
-                            </View>
+        const onChange = (event, selectedDate) => {
+            const currentDate = selectedDate;
+            setShowDatePopUp(false);
+            setEntryDate(currentDate);
+            console.log("----------> currentDate > ", currentDate);
+            switch (dateTimeMode) {
+                case "date":
+                    setSelectedEntryDate(moment(currentDate).format("YYYY-MM-DD"));
+                    break;
+                case "time":
+                    setSelectedEntryTime(moment(currentDate).format('LT'));
+                    break;
+                default:
+                    break;
+            }
+    
+        };
+    
+        const showMode = (currentMode) => {
+            switch (currentMode) {
+                case "date":
+                    setdateTimeMode(currentMode);
+                    setShowDatePopUp(true);
+                    break;
+                case "time":
+                    setdateTimeMode(currentMode);
+                    setShowDatePopUp(true);
+                    break;
+                default:
+                    break;
+            }
+        };
 
-                        </ScrollView>
-                    </SafeAreaView>
+
+        return (
+            <>
+
+                {showDatePopUp && (
+                    <DateTimePicker
+                        style={styles.dateSelector}
+                        mode={dateTimeMode}
+                        value={entryDate}
+                        onChange={onChange} />
+                )}
+                <View style={styles.container}>
+                    <View style={styles.marginLeftRight5}>
+                        <SectionComponent title="Take Entry" />
+                        <View style={{ marginLeft: 9 }}>
+                            <SafeAreaView>
+                                <ScrollView>
+                                    <View style={{ height: 10 }}></View>
+                                    <View style={styles.rowBox}>
+                                        <View style={styles.col6}>
+                                            <TextInput
+                                                placeholder="Select Date"
+                                                selectionColor={null}
+                                                underlineColor={null}
+                                                activeUnderlineColor="#000"
+                                                value={selectedEntryDate}
+                                                disabled={true}
+                                                right={<TextInput.Icon onPress={(e) => showMode('date')} name="calendar-range" />}
+                                            />
+                                        </View>
+                                        <View style={styles.colgap}></View>
+                                        <View style={styles.col6}>
+                                            <TextInput
+                                                placeholder="Select Time"
+                                                selectionColor={null}
+                                                underlineColor={null}
+                                                activeUnderlineColor="#000"
+                                                value={selectedEntryTime}
+                                                disabled={true}
+                                                right={<TextInput.Icon onPress={(e) => showMode('time')} name="update" />}
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.rowBox}>
+                                        <View style={styles.col12}>
+                                            <TextInput
+                                                placeholder="Vehicle No"
+                                                selectionColor="#000"
+                                                underlineColor={null}
+                                                activeUnderlineColor="#000"
+                                                value={vehicleNo}
+                                                onChangeText={(vno) => setVehicleNo(vno)}   
+                                            />
+                                        </View>
+                                    </View>
+                                    <View style={styles.rowBox}>
+                                        <View style={styles.col12}>
+                                            <TextInput
+                                                placeholder="Driver Name"
+                                                selectionColor="#000"
+                                                underlineColor={null}
+                                                activeUnderlineColor="#000"
+                                                value={driverName}
+                                                onChangeText={(dname) => setDriverName(dname)}   
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.rowBox}>
+                                        <View style={styles.col12}>
+                                            <TextInput
+                                                placeholder="Reference No."
+                                                selectionColor="#000"
+                                                underlineColor={null}
+                                                activeUnderlineColor="#000"
+                                                value={refNo}
+                                                onChangeText={(refno) => setRefNo(refno)}   
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.rowBox}>
+                                        <View style={styles.col12}>
+                                            <TextInput
+                                                placeholder="Deliver To?"
+                                                selectionColor="#000"
+                                                underlineColor={null}
+                                                activeUnderlineColor="#000"
+                                                value={deliverTo}
+                                                onChangeText={(deliverto) => DeliverTo(deliverto)}   
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.rowBox}>
+                                        <View style={styles.col12}>
+                                            <Button icon="content-save" mode="contained" color="#39b54a" onPress={() => console.log('Pressed')}>
+                                                Save
+                                            </Button>
+                                        </View>
+                                    </View>
+
+                                </ScrollView>
+                            </SafeAreaView>
+                        </View>
+                    </View>
                 </View>
-            </View>
-        </View>
-    </>;
+            </>
+        )
+    }
+  
 
     const GateEntryStats = () => <>
         <ModalComponent
@@ -292,19 +365,19 @@ const styles = StyleSheet.create({
     rowBox: {
         flex: 1,
         flexDirection: 'row',
-        marginTop: 10
+        marginTop: 5
     },
     col12: {
         width: '100%',
-        height: 90
+        // height: 90
     },
     colgap: {
         width: '1.5%',
-        height: 90
+        // height: 90
     },
     col6: {
         width: '48.5%',
-        height: 90
+        // height: 90
     },
     dateSelector: {
         display: "none"
