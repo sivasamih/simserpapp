@@ -5,10 +5,9 @@ import {
     Text,
     SafeAreaView,
     ScrollView,
-    TouchableHighlight
+    TouchableOpacity
 } from "react-native";
-import { BottomNavigation, List,IconButton } from 'react-native-paper';
-
+import { BottomNavigation, List, IconButton } from 'react-native-paper';
 
 import SectionComponent from "../reusablecomponents/SectionComponent";
 import CalenderComponent from "../reusablecomponents/CalenderComponent";
@@ -25,63 +24,74 @@ export default function GateEntry({ route, navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState('2022-04-02');
 
+    const [supplierInput, setSupplierInput] = useState('');
+    const [supplierList, setSupplierList] = useState([]);
+
     useEffect(() => {
         console.log("---------------------------------------------------------");
         console.log("route > ", route);
         console.log("navigation > ", navigation);
         console.log("---------------------------------------------------------");
-        const gateEntryList=[
+        const gateEntryList = [
             {
-                id:1,
-                title:"Container",
-                desc:"13' - From France, Machine and parts",
-                time:"10:30AM"
+                id: 1,
+                title: "Container",
+                desc: "13' - From France, Machine and parts",
+                time: "10:30AM"
             }, {
-                id:1,
-                title:"Container",
-                desc:"13' - From France, Machine and parts",
-                time:"10:30AM"
+                id: 1,
+                title: "Container",
+                desc: "13' - From France, Machine and parts",
+                time: "10:30AM"
             }, {
-                id:1,
-                title:"Container",
-                desc:"13' - From France, Machine and parts",
-                time:"10:30AM"
+                id: 1,
+                title: "Container",
+                desc: "13' - From France, Machine and parts",
+                time: "10:30AM"
             }, {
-                id:1,
-                title:"Container",
-                desc:"13' - From France, Machine and parts",
-                time:"10:30AM"
+                id: 1,
+                title: "Container",
+                desc: "13' - From France, Machine and parts",
+                time: "10:30AM"
             }, {
-                id:1,
-                title:"Container",
-                desc:"13' - From France, Machine and parts",
-                time:"10:30AM"
+                id: 1,
+                title: "Container",
+                desc: "13' - From France, Machine and parts",
+                time: "10:30AM"
             }, {
-                id:1,
-                title:"Container",
-                desc:"13' - From France, Machine and parts",
-                time:"10:30AM"
+                id: 1,
+                title: "Container",
+                desc: "13' - From France, Machine and parts",
+                time: "10:30AM"
             }, {
-                id:1,
-                title:"Container",
-                desc:"13' - From France, Machine and parts",
-                time:"10:30AM"
+                id: 1,
+                title: "Container",
+                desc: "13' - From France, Machine and parts",
+                time: "10:30AM"
             },
         ];
         setGateEntryList(gateEntryList);
+
+
+
     }, []);
 
-   const viewGateEntryList=()=>{
-       console.log("In viewGateEntryList");
-       setModalVisible(true);
-   }
+    const viewGateEntryList = () => {
+        console.log("In viewGateEntryList");
+        setModalVisible(true);
+    }
 
     const GateEntrySection = () => <>
         <View style={styles.container}>
             <View style={styles.marginLeftRight5}>
                 <SectionComponent title="Take Entry" />
                 <View style={{ marginLeft: 9 }}>
-                    <Text>Gate Entry Insert.....</Text>
+                    <View>
+                        <Text>Gate Entry Insert.....</Text>
+                    </View>
+                    <View>
+
+                    </View>
                 </View>
             </View>
         </View>
@@ -89,19 +99,21 @@ export default function GateEntry({ route, navigation }) {
 
     const GateEntryStats = () => <>
         <ModalComponent
-            title={"Gate Entries on "+selectedDate}
+            title={"Gate Entries on " + selectedDate}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
             modalContent={
                 <>
                     {gateEntryList.length > 0 ? gateEntryList.map((item, i) => (
                         <List.Item
+                            key={"GE_" + item.title + i}
                             title={item.title}
                             description={item.desc + " | " + item.time}
                             left={props => <List.Icon {...props} icon="package-variant-closed" />}
                         />
                     )) : (
                         <List.Item
+                            key={"GE_" + item.title}
                             title="No Entry"
                             description=""
                             left={props => <List.Icon {...props} icon="package-variant-closed" />}
@@ -112,7 +124,7 @@ export default function GateEntry({ route, navigation }) {
         />
         <View style={styles.container}>
             <View style={styles.marginLeftRight5}>
-                <CalenderComponent selectedDate={selectedDate}  setSelectedDate={setSelectedDate} />
+                <CalenderComponent selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
                 <View style={{ height: 20 }}></View>
                 <SectionComponent title="Details" />
                 <SafeAreaView>
