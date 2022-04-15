@@ -5,10 +5,9 @@ import {
     SafeAreaView,
     ScrollView,
     Text,
-
 } from "react-native";
 
-import { TextInput, Button, Surface, TouchableRipple } from 'react-native-paper';
+import { TextInput, Button, Surface, TouchableRipple, Searchbar } from 'react-native-paper';
 
 
 
@@ -27,34 +26,7 @@ const headers = {
 };
 
 
-export default function BranchDashboard({ route, navigation }) {
-    const [loaderStatus, setLoaderStatus] = useState(false);
-    const [sessionData, setSessionData] = useState({});
-    const [visibleBanner, setVisibleBanner] = React.useState(true);
-    const [bannerMessage, setBannerMessage] = React.useState("Notice notification will be shown here...");
-
-    
-
-    useEffect(() => {
-
-        
-
-      //  console.log("route > ", route);
-        // console.log("navigation > ",navigation);
-        getSessionData();
-    }, []);
-
-  
-
-    const getSessionData = async () => {
-        try {
-            const sessionData = await REUSABLES.getStoredSessionData();
-            setSessionData(sessionData);
-        } catch (ex) {
-            console.log("-------> getSessionData ex > ", ex);
-        }
-    }
-
+function MenuCard({ title, screenPath, route, navigation }) {
     const optionClicked = (input) => {
         console.log("Clicking on  > ", input);
         switch (input) {
@@ -66,7 +38,73 @@ export default function BranchDashboard({ route, navigation }) {
                 break;
         }
     }
+    return (
+        <View style={styles.colhalf}>
+            <View style={styles.marginLeftRight5}>
+                <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked(screenPath)}>
+                    <Text style={styles.menuCardTitle}>{title}</Text>
+                </TouchableRipple>
+            </View>
+        </View>
+    );
+}
 
+
+export default function BranchDashboard({ route, navigation }) {
+    const [loaderStatus, setLoaderStatus] = useState(false);
+    const [sessionData, setSessionData] = useState({});
+    const [visibleBanner, setVisibleBanner] = React.useState(true);
+    const [bannerMessage, setBannerMessage] = React.useState("Notice notification will be shown here...");
+    const [menuListMaster, setMenuListMaster] = React.useState([
+        {
+            title: "IN & OUT",
+            screenPath: "INOUT"
+        }, {
+            title: "Gate Entry",
+            screenPath: "Gate Entry"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }
+    ]);
+    const [menuList, setMenuList] = React.useState([
+        {
+            title: "IN & OUT",
+            screenPath: "INOUT"
+        }, {
+            title: "Gate Entry",
+            screenPath: "Gate Entry"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }
+    ]);
+
+
+    useEffect(() => {
+        getSessionData();
+    }, []);
+
+
+
+    const getSessionData = async () => {
+        try {
+            const sessionData = await REUSABLES.getStoredSessionData();
+            setSessionData(sessionData);
+        } catch (ex) {
+            console.log("-------> getSessionData ex > ", ex);
+        }
+    }
+
+
+    const searchMenu = (input) => {
+        console.log("searchMenu  > input > ", input);
+        let menuList = [];
+        menuList = menuListMaster.filter(o =>
+            Object.keys(o).some(k => o[k].toLowerCase().includes(input.toLowerCase())));
+        console.log("searchMenu  > menuList > ", menuList);
+        setMenuList(menuList);
+    }
 
     return (
         <>
@@ -75,77 +113,29 @@ export default function BranchDashboard({ route, navigation }) {
                 visible={visibleBanner}
                 onPress={() => setVisibleBanner(false)} /> */}
 
-            <SectionComponent title="ACTION MENU" />
+            <View>
+                <View style={styles.searchInputView}>
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={(e) => searchMenu(e)}
+                    //   value={searchQuery}
+                    />
+
+                </View>
+            </View>
+            <View style={{ height: 5 }}></View>
+
             <View style={styles.container}>
                 <SafeAreaView>
                     <ScrollView>
-
-                        <View style={styles.rowBox}>
-                            <View style={styles.col6}>
-                                <View style={styles.marginLeftRight5}>
-                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("Gate Entry")}>
-                                        <Text style={styles.menuCardTitle}>Gate Entry</Text>
-                                    </TouchableRipple>
-                                </View>
-                            </View>
-                            <View style={styles.col6}>
-                                <View style={styles.marginLeftRight5}>
-                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 2")}>
-                                        <Text style={styles.menuCardTitle}>Stock In</Text>
-                                    </TouchableRipple>
-                                </View>
-                            </View>
-                            <View style={styles.col6}>
-                                <View style={styles.marginLeftRight5}>
-                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 1")}>
-                                        <Text style={styles.menuCardTitle}>Stock Out</Text>
-                                    </TouchableRipple>
-                                </View>
-                            </View>
-                            <View style={styles.col6}>
-                                <View style={styles.marginLeftRight5}>
-                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 2")}>
-                                        <Text style={styles.menuCardTitle}>PO List</Text>
-                                    </TouchableRipple>
-                                </View>
-                            </View>
-                            <View style={styles.col6}>
-                                <View style={styles.marginLeftRight5}>
-                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 1")}>
-                                        <Text style={styles.menuCardTitle}>Menu 3</Text>
-                                    </TouchableRipple>
-                                </View>
-                            </View>
-                            <View style={styles.col6}>
-                                <View style={styles.marginLeftRight5}>
-                                    <TouchableRipple rippleColor="rgba(104, 143, 173)" style={styles.surface} onPress={() => optionClicked("col 2")}>
-                                        <Text style={styles.menuCardTitle}>Menu 4</Text>
-                                    </TouchableRipple>
-                                </View>
-                            </View>
+                        <View style={styles.controlSpace}>
+                            {menuList.map((item, i) => (
+                                <MenuCard key={item.title + "_" + i} title={item.title} screenPath={item.screenPath} route={route} navigation={navigation} />
+                            ))}
                         </View>
                     </ScrollView>
                 </SafeAreaView>
             </View>
-
-            <SectionComponent title="SECTION 2" />
-            <View style={styles.container}>
-                <SafeAreaView>
-                    <ScrollView>
-                        <View style={{ height: 10 }}></View>
-
-                        <View style={styles.rowBox}>
-                            <View style={styles.col6}>
-
-                            </View>
-                            <View style={styles.col6}>
-
-                            </View>
-                        </View>
-                    </ScrollView>
-                </SafeAreaView>
-            </View>
-
 
             <FullScreenLoader status={loaderStatus} />
         </>
@@ -190,9 +180,29 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: '#004d40',
         letterSpacing: 1.2
+    },
+    colhalf: {
+        minWidth: '50%',
+        maxWidth: '50%',
+        width: '50%',
+        height: 80,
+        padding: 8,
+    },
+    controlSpace: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        backgroundColor: '#F5F5F5',
+    },
+    searchInputView: {
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10
+    },
+    searchTextInput: {
+        color: '#bdbdbd'
     }
 });
 
 
- 
+
 

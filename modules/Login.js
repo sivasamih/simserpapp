@@ -131,7 +131,7 @@ export default function Login({ navigation }) {
             {sessionData &&  sessionData!=={}? sessionData.head ? (
                 <>
                     <View style={styles.container2}>
-                        <CompanyList sessionData={sessionData} logout={logout} openBranchDashboard={openBranchDashboard} />
+                        <CompanyList key="companyList" sessionData={sessionData} logout={logout} openBranchDashboard={openBranchDashboard} />
                     </View>
                 </>
             ) : (
