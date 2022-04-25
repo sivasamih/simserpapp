@@ -118,7 +118,6 @@ export default function BranchDashboard({ route, navigation }) {
                     <Searchbar
                         placeholder="Search"
                         onChangeText={(e) => searchMenu(e)}
-                    //   value={searchQuery}
                     />
 
                 </View>
@@ -130,7 +129,11 @@ export default function BranchDashboard({ route, navigation }) {
                     <ScrollView>
                         <View style={styles.controlSpace}>
                             {menuList.map((item, i) => (
-                                <MenuCard key={item.title + "_" + i} title={item.title} screenPath={item.screenPath} route={route} navigation={navigation} />
+                                <MenuCard 
+                                key={item.title + "_" + i} 
+                                title={item.title} 
+                                screenPath={item.screenPath} 
+                                route={route} navigation={navigation} />
                             ))}
                         </View>
                     </ScrollView>

@@ -39,7 +39,7 @@ export default function Login({ navigation }) {
         }else{
            // getSessionData();
         }
-        getSessionData();
+        getSessionData();        
     }, []);
 
 

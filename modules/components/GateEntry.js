@@ -7,18 +7,28 @@ import {
     ScrollView,
     TouchableOpacity,
 } from "react-native";
+
 import { BottomNavigation, List, IconButton, TextInput,Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {Picker} from '@react-native-picker/picker';
 import moment from "moment";
 
 import SectionComponent from "../reusablecomponents/SectionComponent";
 import CalenderComponent from "../reusablecomponents/CalenderComponent";
 import ModalComponent from "../reusablecomponents/ModalComponent";
+import FullScreenLoader from "../reusablecomponents/FullScreenLoader";
+import AlertBar from "../reusablecomponents/AlertBar";
+import * as APIURLS from '../helpers/apiconstant';
+import * as FETCHAPI from '../helpers/fetchapi';
+import * as REUSABLES from '../helpers/reusables';
 
 const today = moment().format("YYYY-MM-DD");
 
 const currentTime = moment().format('LT');
 
+const headers = {
+    "Content-Type": "application/json",
+  };
 
 export default function GateEntry({ route, navigation }) {
     const [index, setIndex] = useState(0);
@@ -93,15 +103,13 @@ export default function GateEntry({ route, navigation }) {
     }
 
     const GateEntrySection = () => {
-       
-
-
         const [showDatePopUp, setShowDatePopUp] = useState(false);
         const [dateTimeMode, setdateTimeMode] = useState(null);
         const [entryDate, setEntryDate] = useState(new Date());
-        const [entryTime, setEntryTime] = useState(new Date());
+        const [entryTime, setEntryTime] = useState(new Date());        
         const [selectedEntryDate, setSelectedEntryDate] = useState(today);
         const [selectedEntryTime, setSelectedEntryTime] = useState(currentTime);
+        const [documentType, setDocumentType] = useState('');
         const [vehicleNo, setVehicleNo] = useState('');
         const [driverName, setDriverName] = useState('');
         const [refNo, setRefNo] = useState('');
@@ -111,6 +119,34 @@ export default function GateEntry({ route, navigation }) {
         const [supplierInput, setSupplierInput] = useState('');
         const [supplierList, setSupplierList] = useState([]);
 
+        const [loaderStatus, setLoaderStatus] = useState(false);
+        const [alertBarStatus, setAlertBarStatus] = useState(false);
+        const [alertBarMessage, setAlertBarMessage] = useState(null);
+
+        const onDismissSnackBar = () => setAlertBarStatus(false);
+
+        useEffect(() => {            
+            getSuppliers();
+        }, []);
+
+        const getValidUserData=async()=>{
+            const sessionData = await REUSABLES.getStoredSessionData();
+            const token = sessionData.head.token;
+            console.log("-------> token  > ", token);
+            let validUser={
+                UserID:sessionData.head.userID,
+                Token:sessionData.head.token
+            }
+            return validUser;
+        }
+
+        const getSuppliers=async()=>{
+            const validUser=await getValidUserData();
+            console.log("getSuppliers > validUser > ",validUser);
+            const res = await FETCHAPI.APICALL(APIURLS.APIURL.GetAllSupplier,validUser, headers);
+            console.log("getSuppliers > res > ",res);
+            setSupplierList(res);
+        }
 
         const onChange = (event, selectedDate) => {
             const currentDate = selectedDate;
@@ -145,9 +181,42 @@ export default function GateEntry({ route, navigation }) {
             }
         };
 
+        const saveGateEntry = async () => {
+            if (isValidEntry() === true) {
+                try {
+                    const sessionData = await REUSABLES.getStoredSessionData();
+                    const token = sessionData.head.token;
+                    console.log("-------> token  > ", token);
+                    let validUser={
+                        UserID:sessionData.head.userID,
+                        Token:sessionData.head.token
+                    }
+                } catch (ex) {
+                    
+                }
+            } else {
+                setAlertBarStatus(true);
+                setAlertBarMessage("Enter Details Properly.");
+            }
+        }
+
+        const isValidEntry=()=>{
+            let isValid=false;
+            if(
+                documentType!=="" &&
+                deliverTo!==""
+            ){
+                isValid=true;
+            }
+            return isValid;
+        }
+
 
         return (
             <>
+
+                <FullScreenLoader status={loaderStatus} />
+                <AlertBar status={alertBarStatus} message={alertBarMessage} onDismissSnackBar={onDismissSnackBar} />
 
                 {showDatePopUp && (
                     <DateTimePicker
@@ -188,7 +257,27 @@ export default function GateEntry({ route, navigation }) {
                                             />
                                         </View>
                                     </View>
-
+                                    
+                                    <View style={styles.rowBox}>
+                                        <View style={styles.col12}>
+                                            <Picker
+                                                style={styles.Picker}
+                                                selectedValue={documentType}
+                                                onValueChange={(itemValue, itemIndex) =>
+                                                    setDocumentType(itemValue)
+                                                }>
+                                                <Picker.Item label="Goods Type" value="" />
+                                                <Picker.Item label="Doument" value="Doument" />
+                                                <Picker.Item label="Goods" value="Goods" />
+                                                <Picker.Item label="Visitor" value="Visitor" />
+                                            </Picker>
+                                        </View>
+                                    </View>
+                                    <View style={styles.rowBox}>
+                                        <View style={styles.col12}>
+                                             
+                                        </View>
+                                    </View>
                                     <View style={styles.rowBox}>
                                         <View style={styles.col12}>
                                             <TextInput
@@ -242,7 +331,7 @@ export default function GateEntry({ route, navigation }) {
 
                                     <View style={styles.rowBox}>
                                         <View style={styles.col12}>
-                                            <Button icon="content-save" mode="contained" color="#39b54a" onPress={() => console.log('Pressed')}>
+                                            <Button icon="content-save" mode="contained" color="#39b54a" onPress={() => saveGateEntry()}>
                                                 Save
                                             </Button>
                                         </View>
@@ -330,7 +419,7 @@ export default function GateEntry({ route, navigation }) {
     return (
         <>
             <BottomNavigation
-                barStyle={{ backgroundColor: '#009688' }}
+                barStyle={{ backgroundColor: '#0072bc' }}
                 activeColor="#000"
                 navigationState={{ index, routes }}
                 onIndexChange={setIndex}
@@ -388,4 +477,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
     },
+    Picker:{
+        backgroundColor:'#e0e0e0'
+    }
 });
