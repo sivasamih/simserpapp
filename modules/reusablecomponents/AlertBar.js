@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     snackbar:{
-        backgroundColor:'#004d40',
+        backgroundColor:'#ffab40',
     }
 
 });

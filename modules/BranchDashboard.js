@@ -113,7 +113,7 @@ export default function BranchDashboard({ route, navigation }) {
                 visible={visibleBanner}
                 onPress={() => setVisibleBanner(false)} /> */}
 
-            <View>
+            {/* <View>
                 <View style={styles.searchInputView}>
                     <Searchbar
                         placeholder="Search"
@@ -121,7 +121,7 @@ export default function BranchDashboard({ route, navigation }) {
                     />
 
                 </View>
-            </View>
+            </View> */}
             <View style={{ height: 5 }}></View>
 
             <View style={styles.container}>

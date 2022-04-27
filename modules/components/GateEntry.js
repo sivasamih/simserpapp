@@ -11,9 +11,11 @@ import axios from "axios";
 
 import { BottomNavigation, List, IconButton, TextInput,Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Picker} from '@react-native-picker/picker';
 import MultiSelect from 'react-native-multiple-select';
 import moment from "moment";
+
+import PickerInput from "../reusablecomponents/PickerInput";
+import MultiSelectInput from "../reusablecomponents/MultiSelectInput";
 
 import SectionComponent from "../reusablecomponents/SectionComponent";
 import CalenderComponent from "../reusablecomponents/CalenderComponent";
@@ -33,6 +35,23 @@ const headers = {
   };
 
   const fontSize=14;
+
+  const documentTypeList=[
+      {
+        label:"Document",
+        value:"1"
+      },
+      {
+        label:"Goods",
+        value:"2"
+      },
+      {
+        label:"Visitor",
+        value:"3"
+      }
+  ];
+
+  
 
 export default function GateEntry({ route, navigation }) {
     const [index, setIndex] = useState(0);
@@ -231,10 +250,11 @@ export default function GateEntry({ route, navigation }) {
                             driverName:driverName,
                             refNo:refNo,
                             deliverTo:deliverTo,
-                            suppID:0
+                            suppID:parseInt(supplierInput[0])
                         }
                     }; 
 
+                    console.log("reqData > ",reqData);
                     /*
                     axios
                     .post(APIURLS.APIURL.GetAllSupplier, reqData, { headers })
@@ -296,6 +316,7 @@ export default function GateEntry({ route, navigation }) {
                                     <View style={styles.rowBox}>
                                         <View style={styles.col6}>
                                             <TextInput
+                                               style={styles.textInput}
                                                 placeholder="Select Date"
                                                 selectionColor={null}
                                                 underlineColor={null}
@@ -308,6 +329,7 @@ export default function GateEntry({ route, navigation }) {
                                         <View style={styles.colgap}></View>
                                         <View style={styles.col6}>
                                             <TextInput
+                                                style={styles.textInput}
                                                 placeholder="Select Time"
                                                 selectionColor={null}
                                                 underlineColor={null}
@@ -318,9 +340,22 @@ export default function GateEntry({ route, navigation }) {
                                             />
                                         </View>
                                     </View>
-                                    <View style={[styles.rowBox,{marginBottom:-10}]}>
+                                    <View style={styles.rowBox}>
                                         <View style={styles.col12}>
-                                            <MultiSelect
+                                            <PickerInput
+                                             label="Type"
+                                             style={styles.Picker}
+                                             selectedValue={documentType}
+                                             onValueChange={(itemValue, itemIndex) =>
+                                                 setDocumentType(itemValue)
+                                             }
+                                             options={documentTypeList}
+                                            />
+                                        </View>
+                                    </View>
+                                    <View style={[styles.rowBox,{marginBottom:-5,marginTop:20}]}>
+                                        <View style={styles.col12}>
+                                            <MultiSelectInput
                                                 styleDropdownMenu={styles.autocompleteInput}
                                                 styleDropdownMenuSubsection={styles.styleDropdownMenuSubsection}
                                                 styleTextDropdown={styles.styleTextDropdown}
@@ -330,7 +365,7 @@ export default function GateEntry({ route, navigation }) {
                                                 selectText="Supplier"
                                                 searchInputPlaceholderText="Supplier"
                                                 hideTags={true}
-                                                items={supplierList}
+                                                options={supplierList}
                                                 uniqueKey="id"
                                                 onSelectedItemsChange={setSupplier}
                                                 selectedItems={supplierInput}
@@ -340,27 +375,12 @@ export default function GateEntry({ route, navigation }) {
                                             />
                                         </View>
                                     </View>
-                                    
-                                    <View style={styles.rowBox}>
-                                        <View style={styles.col12}>
-                                            <Picker
-                                                style={styles.Picker}
-                                                selectedValue={documentType}
-                                                onValueChange={(itemValue, itemIndex) =>
-                                                    setDocumentType(itemValue)
-                                                }>
-                                                <Picker.Item label="Goods Type" value="0" />
-                                                <Picker.Item label="Document" value="1" />
-                                                <Picker.Item label="Goods" value="2" />
-                                                <Picker.Item label="Visitor" value="3" />
-                                            </Picker>
-                                        </View>
-                                    </View>
                                    
 
                                     <View style={styles.rowBox}>
                                         <View style={styles.col12}>
                                             <TextInput
+                                                style={styles.textInput}
                                                 placeholder="Vehicle No"
                                                 selectionColor="#000"
                                                 underlineColor={null}
@@ -373,7 +393,8 @@ export default function GateEntry({ route, navigation }) {
                                     <View style={styles.rowBox}>
                                         <View style={styles.col12}>
                                             <TextInput
-                                                placeholder="Driver Name"
+                                             style={styles.textInput}
+                                                placeholder="Name"
                                                 selectionColor="#000"
                                                 underlineColor={null}
                                                 activeUnderlineColor="#000"
@@ -386,6 +407,7 @@ export default function GateEntry({ route, navigation }) {
                                     <View style={styles.rowBox}>
                                         <View style={styles.col12}>
                                             <TextInput
+                                             style={styles.textInput}
                                                 placeholder="Reference No."
                                                 selectionColor="#000"
                                                 underlineColor={null}
@@ -399,6 +421,7 @@ export default function GateEntry({ route, navigation }) {
                                     <View style={styles.rowBox}>
                                         <View style={styles.col12}>
                                             <TextInput
+                                             style={styles.textInput}
                                                 placeholder="Deliver To?"
                                                 selectionColor="#000"
                                                 underlineColor={null}
@@ -559,22 +582,23 @@ const styles = StyleSheet.create({
         fontSize:fontSize
     },
     Picker:{
+        height: 40, 
         backgroundColor:'#e0e0e0',
         color:"#616161" ,
         fontSize:fontSize
     },
     autocompleteInput: {
-        height: 50,
+        height: 45,
         backgroundColor:'#e0e0e0',
         fontSize:fontSize
     },
     styleDropdownMenuSubsection:{
         backgroundColor:'#e0e0e0',
-        height: 50,
+        height: 45,
         fontSize:fontSize
     },
     autocompleteInputInputGroup:{
-        height: 50,
+        height: 45,
         paddingLeft:10,
         backgroundColor:'#e0e0e0',
         fontSize:fontSize
@@ -591,5 +615,9 @@ const styles = StyleSheet.create({
     styleTextDropdown:{
         paddingLeft:15,
         fontSize:fontSize 
+    },
+    textInput:{
+        height:45,
+        fontSize:fontSize
     }
 });
