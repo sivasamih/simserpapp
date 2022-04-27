@@ -15,6 +15,7 @@
     "@react-native-picker/picker": "^2.4.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.2",
+    "axios": "^0.27.1",
     "expo": "~44.0.0",
     "expo-barcode-scanner": "~11.2.0",
     "expo-camera": "~12.1.2",
@@ -25,15 +26,19 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-autocomplete-dropdown": "^1.2.0",
     "react-native-autocomplete-input": "^5.1.0",
+    "react-native-autocomplete-select": "^1.0.0",
     "react-native-calendars": "^1.1280.0",
     "react-native-modern-datepicker": "^1.0.0-beta.91",
+    "react-native-multiple-select": "^0.5.7",
     "react-native-paper": "^4.11.2",
     "react-native-progress": "^5.0.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "react-select": "^5.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

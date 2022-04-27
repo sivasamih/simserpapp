@@ -7,10 +7,12 @@ import {
     ScrollView,
     TouchableOpacity,
 } from "react-native";
+import axios from "axios";
 
 import { BottomNavigation, List, IconButton, TextInput,Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
+import MultiSelect from 'react-native-multiple-select';
 import moment from "moment";
 
 import SectionComponent from "../reusablecomponents/SectionComponent";
@@ -29,6 +31,8 @@ const currentTime = moment().format('LT');
 const headers = {
     "Content-Type": "application/json",
   };
+
+  const fontSize=14;
 
 export default function GateEntry({ route, navigation }) {
     const [index, setIndex] = useState(0);
@@ -116,7 +120,7 @@ export default function GateEntry({ route, navigation }) {
         const [deliverTo, DeliverTo] = useState('');
         
 
-        const [supplierInput, setSupplierInput] = useState('');
+        const [supplierInput, setSupplierInput] = useState([]);
         const [supplierList, setSupplierList] = useState([]);
 
         const [loaderStatus, setLoaderStatus] = useState(false);
@@ -125,14 +129,19 @@ export default function GateEntry({ route, navigation }) {
 
         const onDismissSnackBar = () => setAlertBarStatus(false);
 
-        useEffect(() => {            
+        useEffect(() => {     
+            const ac = new AbortController();       
             getSuppliers();
+
+            //return () => ac.abort();
+            return () => {
+                setSupplierList([]);
+              };
         }, []);
 
         const getValidUserData=async()=>{
             const sessionData = await REUSABLES.getStoredSessionData();
             const token = sessionData.head.token;
-            console.log("-------> token  > ", token);
             let validUser={
                 UserID:sessionData.head.userID,
                 Token:sessionData.head.token
@@ -142,10 +151,30 @@ export default function GateEntry({ route, navigation }) {
 
         const getSuppliers=async()=>{
             const validUser=await getValidUserData();
-            console.log("getSuppliers > validUser > ",validUser);
-            const res = await FETCHAPI.APICALL(APIURLS.APIURL.GetAllSupplier,validUser, headers);
-            console.log("getSuppliers > res > ",res);
-            setSupplierList(res);
+            // const res = await FETCHAPI.APICALL(APIURLS.APIURL.GetAllSupplier,validUser, headers);
+            // console.log("getSuppliers > res > ",res);
+            axios
+            .post(APIURLS.APIURL.GetAllSupplier, validUser, { headers })
+            .then((response) => {
+              let data = response.data;
+              let supplierList=[];
+              if (data.length > 0) {
+                  for(let supplier of data){
+                    supplierList.push({
+                        id:supplier.SuplID,
+                        name:supplier.Name
+                    });
+                  }
+                  console.log("supplierList > ",supplierList);
+                setSupplierList(supplierList);
+              }
+            })
+            .catch((error) => {
+               
+            });
+
+
+            
         }
 
         const onChange = (event, selectedDate) => {
@@ -191,6 +220,31 @@ export default function GateEntry({ route, navigation }) {
                         UserID:sessionData.head.userID,
                         Token:sessionData.head.token
                     }
+                    let reqData={
+                        validUser:validUser,
+                        gateEntry:{
+                            entryDate:selectedEntryDate,
+                            time:selectedEntryTime,
+                            documentType:documentType,
+                            vehicleNo:vehicleNo,
+                            driverName:driverName,
+                            refNo:refNo,
+                            deliverTo:deliverTo,
+                            suppID:0
+                        }
+                    }; 
+
+                    /*
+                    axios
+                    .post(APIURLS.APIURL.GetAllSupplier, reqData, { headers })
+                    .then((response) => {
+                       
+                    })
+                    .catch((error) => {
+                       
+                    });
+                    */
+
                 } catch (ex) {
                     
                 }
@@ -209,6 +263,12 @@ export default function GateEntry({ route, navigation }) {
                 isValid=true;
             }
             return isValid;
+        }
+
+        const setSupplier=selectedItems=>{
+            {console.log("----------------------------")}
+            {console.log("setSupplier > item > ",selectedItems)}
+            setSupplierInput(selectedItems)
         }
 
 
@@ -257,6 +317,28 @@ export default function GateEntry({ route, navigation }) {
                                             />
                                         </View>
                                     </View>
+                                    <View style={[styles.rowBox,{marginBottom:-10}]}>
+                                        <View style={styles.col12}>
+                                            <MultiSelect
+                                                styleDropdownMenu={styles.autocompleteInput}
+                                                styleDropdownMenuSubsection={styles.styleDropdownMenuSubsection}
+                                                styleTextDropdown={styles.styleTextDropdown}
+                                                styleInputGroup={styles.autocompleteInputInputGroup}
+                                                styleRowList={styles.autocompleteInputstyleRowList}
+                                                styleTextDropdownSelected={styles.styleTextDropdownSelected}
+                                                selectText="Supplier"
+                                                searchInputPlaceholderText="Supplier"
+                                                hideTags={true}
+                                                items={supplierList}
+                                                uniqueKey="id"
+                                                onSelectedItemsChange={setSupplier}
+                                                selectedItems={supplierInput}
+                                                single={true}
+                                                searchInputStyle={{ color: '#000' }}
+                                                selectedItemTextColor="#000"
+                                            />
+                                        </View>
+                                    </View>
                                     
                                     <View style={styles.rowBox}>
                                         <View style={styles.col12}>
@@ -273,11 +355,8 @@ export default function GateEntry({ route, navigation }) {
                                             </Picker>
                                         </View>
                                     </View>
-                                    <View style={styles.rowBox}>
-                                        <View style={styles.col12}>
-                                             
-                                        </View>
-                                    </View>
+                                   
+
                                     <View style={styles.rowBox}>
                                         <View style={styles.col12}>
                                             <TextInput
@@ -476,8 +555,40 @@ const styles = StyleSheet.create({
         margin: 12,
         borderWidth: 1,
         padding: 10,
+        fontSize:fontSize
     },
     Picker:{
-        backgroundColor:'#e0e0e0'
+        backgroundColor:'#e0e0e0',
+        color:"#616161" ,
+        fontSize:fontSize
+    },
+    autocompleteInput: {
+        height: 50,
+        backgroundColor:'#e0e0e0',
+        fontSize:fontSize
+    },
+    styleDropdownMenuSubsection:{
+        backgroundColor:'#e0e0e0',
+        height: 50,
+        fontSize:fontSize
+    },
+    autocompleteInputInputGroup:{
+        height: 50,
+        paddingLeft:10,
+        backgroundColor:'#e0e0e0',
+        fontSize:fontSize
+    },
+    autocompleteInputstyleRowList:{
+      height:40 ,
+      color:"#000" 
+    },
+    styleTextDropdownSelected:{
+        color:"#000",
+        paddingLeft:15,
+        fontSize:fontSize 
+    },
+    styleTextDropdown:{
+        paddingLeft:15,
+        fontSize:fontSize 
     }
 });
