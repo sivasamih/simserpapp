@@ -122,23 +122,36 @@ export default function BranchDashboard({ route, navigation }) {
 
                 </View>
             </View> */}
-            <View style={{ height: 5 }}></View>
+            {/* <View style={{ height: 5 }}></View> */}
 
-            <View style={styles.container}>
-                <SafeAreaView>
-                    <ScrollView>
+            <SafeAreaView>
+                <ScrollView style={{ backgroundColor: '#F5F5F5' }}>
+                    <View style={styles.container}>    
+                         
+                        <View style={styles.welcomeWrapper}>
+
+                            <View style={{width:'50%'}}>
+                             <Text>Dashboard</Text>
+                            </View>
+                            <View style={{width:'50%'}}>
+                             <Text>Dashboard</Text>
+                            </View>
+                            
+                        </View>   
+
                         <View style={styles.controlSpace}>
                             {menuList.map((item, i) => (
-                                <MenuCard 
-                                key={item.title + "_" + i} 
-                                title={item.title} 
-                                screenPath={item.screenPath} 
-                                route={route} navigation={navigation} />
+                                <MenuCard
+                                    key={item.title + "_" + i}
+                                    title={item.title}
+                                    screenPath={item.screenPath}
+                                    route={route} navigation={navigation} />
                             ))}
                         </View>
-                    </ScrollView>
-                </SafeAreaView>
-            </View>
+                    </View>
+
+                </ScrollView>
+            </SafeAreaView>
 
             <FullScreenLoader status={loaderStatus} />
         </>
@@ -149,10 +162,10 @@ export default function BranchDashboard({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#0072bc",//"#f5f5f5",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: 'Calibri'
+        fontFamily: 'Calibri',
     },
     rowBox: {
         flex: 1,
@@ -191,11 +204,20 @@ const styles = StyleSheet.create({
         height: 80,
         padding: 8,
     },
+    welcomeWrapper:{
+        flexDirection: 'row',
+        marginLeft:20,
+        alignContent:'flex-end'
+    },
     controlSpace: {
+        paddingTop:30,
         flexDirection: 'row',
         flexWrap: 'wrap',
         backgroundColor: '#F5F5F5',
+        borderTopLeftRadius: 50,
+        marginTop: 90,
     },
+
     searchInputView: {
         marginTop: 10,
         marginLeft: 10,
