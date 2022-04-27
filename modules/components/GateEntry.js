@@ -223,6 +223,7 @@ export default function GateEntry({ route, navigation }) {
                     let reqData={
                         validUser:validUser,
                         gateEntry:{
+                            GateEntryID:0,
                             entryDate:selectedEntryDate,
                             time:selectedEntryTime,
                             documentType:documentType,
@@ -348,10 +349,10 @@ export default function GateEntry({ route, navigation }) {
                                                 onValueChange={(itemValue, itemIndex) =>
                                                     setDocumentType(itemValue)
                                                 }>
-                                                <Picker.Item label="Goods Type" value="" />
-                                                <Picker.Item label="Doument" value="Doument" />
-                                                <Picker.Item label="Goods" value="Goods" />
-                                                <Picker.Item label="Visitor" value="Visitor" />
+                                                <Picker.Item label="Goods Type" value="0" />
+                                                <Picker.Item label="Document" value="1" />
+                                                <Picker.Item label="Goods" value="2" />
+                                                <Picker.Item label="Visitor" value="3" />
                                             </Picker>
                                         </View>
                                     </View>
