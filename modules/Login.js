@@ -3,14 +3,14 @@ import {
     StyleSheet,
     View,
     Image,
+    TextInput,
+    Text
 } from "react-native";
-
-import { TextInput, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
 import * as APIURLS from './helpers/apiconstant';
 import * as FETCHAPI from './helpers/fetchapi';
 import * as REUSABLES from './helpers/reusables';
-
 
 import CompanyList from "./components/CompanyList";
 import FullScreenLoader from "./reusablecomponents/FullScreenLoader";
@@ -20,7 +20,6 @@ const headers = {
     "Content-Type": "application/json",
 };
 
-
 export default function Login({ navigation }) {
     const [userid, setUserid] = useState(null);
     const [password, setPassword] = useState(null);
@@ -29,23 +28,16 @@ export default function Login({ navigation }) {
     const [alertBarStatus, setAlertBarStatus] = useState(false);
     const [alertBarMessage, setAlertBarMessage] = useState(null);
 
-
-    useEffect(() => {    
-        console.log("Hi samihan ");     
-        console.log("sessionData > ",sessionData);     
+    useEffect(() => {
         if (sessionData === null) {
-            REUSABLES.storeSessionData('sessionData', {});  
+            REUSABLES.storeSessionData('sessionData', {});
             setSessionData({});
-        }else{
-           // getSessionData();
         }
-        getSessionData();        
+        getSessionData();
     }, []);
 
-
-
     const processLogin = async () => {
-        try{
+        try {
             if (userid.trim() !== "" && password.trim() !== "") {
                 setLoaderStatus(true);
                 try {
@@ -55,31 +47,31 @@ export default function Login({ navigation }) {
                         ClientInfo: ""
                     };
                     const res = await FETCHAPI.APICALL(APIURLS.APIURL.Login, Data, headers);
-    
+
                     console.log("await res > ", res);
-    
+
                     if (res.status === true) {
-                        let data=await res.data;
-                        if(data.head){
-                            if(data.head.status!=="UU"){
+                        let data = await res.data;
+                        if (data.head) {
+                            if (data.head.status !== "UU") {
                                 REUSABLES.storeSessionData('sessionData', await res.data);
                                 getSessionData();
                                 setLoaderStatus(false);
-                            }else{
+                            } else {
                                 setPassword(null);
                                 setLoaderStatus(false);
                                 setAlertBarStatus(true);
                                 setAlertBarMessage("Invalid Credentials");
                             }
                         }
-                        
+
                     } else {
                         setPassword(null);
                         setLoaderStatus(false);
                         setAlertBarStatus(true);
                         setAlertBarMessage("Invalid Credentials");
                     }
-    
+
                 } catch (ex) {
                     console.log("-------> ERROR ex > ", ex);
                     setLoaderStatus(false);
@@ -87,7 +79,7 @@ export default function Login({ navigation }) {
                     setAlertBarMessage("API Error");
                 }
             }
-        }catch(ex){}
+        } catch (ex) { }
     }
 
     const getSessionData = async () => {
@@ -128,7 +120,7 @@ export default function Login({ navigation }) {
 
     return (
         <>
-            {sessionData &&  sessionData!=={}? sessionData.head ? (
+            {sessionData && sessionData !== {} ? sessionData.head ? (
                 <>
                     <View style={styles.container2}>
                         <CompanyList key="companyList" sessionData={sessionData} logout={logout} openBranchDashboard={openBranchDashboard} />
@@ -136,41 +128,37 @@ export default function Login({ navigation }) {
                 </>
             ) : (
                 <>
-                <View style={{flex:1,backgroundColor:'#e0f2f1',borderBottomLeftRadius:250,borderBottomRightRadius:250}}>
-                    <View style={{marginTop:150,alignItems:'center'}}>
-                    <Image style={styles.image} source={require("../assets/B1.png")} />
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: '#e3f2fd',
+                        borderBottomLeftRadius: 250,
+                    }}>
+                        <View style={{ marginTop: 80, alignItems: 'center' }}>
+                            <Image style={styles.image} source={require("../assets/B1.png")} />
+                        </View>
                     </View>
-                </View>
-                <View style={styles.container}>
-                       
+                    <View style={styles.loginTextWrapper}>
+                        <Text style={styles.loginText}>Login</Text>
+                        <Text style={styles.loginTextCaption}>Please sign in to your account</Text>
+                    </View>
+                    <View style={styles.container}>
                         <View style={styles.inputView}>
                             <TextInput
                                 placeholder="User ID"
                                 style={styles.TextInput}
-                                selectionColor="#0072bc"
-                                underlineColor={null}
-                                activeUnderlineColor="#39b54a"
-                                // label="User ID"
                                 value={userid}
                                 onChangeText={(userid) => setUserid(userid)}
                             />
                         </View>
-
                         <View style={styles.inputView}>
                             <TextInput
                                 placeholder="Password"
                                 style={styles.TextInput}
-                                selectionColor="#0072bc"
-                                underlineColor={null}
-                                activeUnderlineColor="#39b54a"
-                                // label="Password"
                                 value={password}
                                 secureTextEntry
-                                // right={<TextInput.Icon name="eye" />}  
                                 onChangeText={(password) => setPassword(password)}
                             />
                         </View>
-
                         <View style={styles.loginBtn}>
                             <Button
                                 style={styles.loginBtnElement}
@@ -192,20 +180,29 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: 'Calibri'
     },
     container2: {
         backgroundColor: "#fff",
-        fontFamily: 'Calibri'
     },
-
+    loginTextWrapper: {
+        marginLeft: 55,
+        marginBottom: 20
+    },
+    loginText: {
+        color: '#0072bc',
+        fontSize: 30,
+        fontWeight: 'bold',
+        letterSpacing: 2
+    },
+    loginTextCaption: {
+        color: '#bdbdbd'
+    },
     image: {
         marginBottom: 40,
         width: '70%',
-        height: 70
+        height: 70,
     },
     image2: {
         marginBottom: 40,
@@ -220,19 +217,18 @@ const styles = StyleSheet.create({
         height: 45,
         marginBottom: 25,
         alignItems: "center",
-        fontFamily: 'Calibri'
     },
 
     TextInput: {
         backgroundColor: '#fff',
         width: '100%',
-        fontFamily: 'Calibri',
         borderStyle: 'solid',
         borderWidth: 1,
         height: 40,
         lineHeight: 40,
         borderTopLeftRadius: 0,
-        borderTopRightRadius: 0
+        borderTopRightRadius: 0,
+        padding: 10,
     },
 
     forgot_button: {
@@ -247,10 +243,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 40,
-        fontFamily: 'Calibri'
     },
     loginBtnElement: {
         backgroundColor: 'rgb(0, 114, 188)',
-        fontFamily: 'Calibri'
     }
 });
