@@ -54,6 +54,7 @@ const headers = {
   
 
 export default function GateEntry({ route, navigation }) {
+    const [branchID, setBranchID] = useState(0);
     const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'section1', title: 'Take Entry', icon: 'boom-gate' },
@@ -66,7 +67,12 @@ export default function GateEntry({ route, navigation }) {
     useEffect(() => {
         console.log("---------------------------------------------------------");
         console.log("route > ", route);
-        console.log("navigation > ", navigation);
+        console.log("route.params.params.branchID > ", route.params.params.branchID);
+      try{
+        setBranchID(parseInt(route.params.params.branchID)); 
+      }catch(ex){}
+        
+
         console.log("---------------------------------------------------------");
         const gateEntryList = [
             {
@@ -138,7 +144,7 @@ export default function GateEntry({ route, navigation }) {
         const [refNo, setRefNo] = useState('');
         const [deliverTo, DeliverTo] = useState('');
         
-
+        const [branch, setBranch] = useState({});
         const [supplierInput, setSupplierInput] = useState([]);
         const [supplierList, setSupplierList] = useState([]);
 
@@ -148,14 +154,15 @@ export default function GateEntry({ route, navigation }) {
 
         const onDismissSnackBar = () => setAlertBarStatus(false);
 
-        useEffect(() => {     
+        useEffect(() => {    
+            console.log("$$$$$ GateEntrySection > branchID > ",branchID); 
             const ac = new AbortController();       
             getSuppliers();
 
             //return () => ac.abort();
             return () => {
                 setSupplierList([]);
-              };
+            };
         }, []);
 
         const getValidUserData=async()=>{
@@ -170,29 +177,40 @@ export default function GateEntry({ route, navigation }) {
 
         const getSuppliers=async()=>{
             const validUser=await getValidUserData();
+            console.log("supplierList > validUser > ",validUser);
             // const res = await FETCHAPI.APICALL(APIURLS.APIURL.GetAllSupplier,validUser, headers);
-            // console.log("getSuppliers > res > ",res);
-            axios
-            .post(APIURLS.APIURL.GetAllSupplier, validUser, { headers })
-            .then((response) => {
-              let data = response.data;
-              let supplierList=[];
-              if (data.length > 0) {
-                  for(let supplier of data){
-                    supplierList.push({
-                        id:supplier.SuplID,
-                        name:supplier.Name
-                    });
+            let reqData={
+                ValidUser: validUser,
+                Supplier: {
+                    BranchID: parseInt(branchID)
                   }
-                  console.log("supplierList > ",supplierList);
-                setSupplierList(supplierList);
-              }
+            };  
+           
+            axios
+            .post(APIURLS.APIURL.GetSuppliersByBranchID, reqData, { headers })
+            .then((response) => {
+              console.log("getSuppliers > response > ",response);
+                try {
+                    let data = response.data;
+                    let Branch = data.Branch[0];
+
+                    let supplierData = data.Supplier;
+                    let supplierList = [];
+                    for (let supplier of supplierData) {
+                        supplierList.push({
+                            id: supplier.SuplID,
+                            name: supplier.Name
+                        });
+                    }
+                    console.log("supplierList > ", supplierList);
+                    setSupplierList(supplierList);
+                    setBranch(Branch);
+                } catch (ex) { }  
+              
             })
             .catch((error) => {
-               
+                console.log("supplierList > error > ",error);
             });
-
-
             
         }
 
@@ -241,30 +259,31 @@ export default function GateEntry({ route, navigation }) {
                     }
                     let reqData={
                         validUser:validUser,
-                        gateEntry:{
-                            GateEntryID:0,
-                            entryDate:selectedEntryDate,
-                            time:selectedEntryTime,
-                            documentType:documentType,
-                            vehicleNo:vehicleNo,
-                            driverName:driverName,
-                            refNo:refNo,
-                            deliverTo:deliverTo,
-                            suppID:parseInt(supplierInput[0])
+                        GateEntry:{
+                            GEID :0,
+                            No  :"",
+                            EntryDate  :selectedEntryDate,
+                            EntryTime :selectedEntryTime,
+                            DocumentType:parseInt(documentType),
+                            VehicleNo:vehicleNo,
+                            Name:driverName,
+                            RefNo:refNo,
+                            DeliverTo:deliverTo,
+                            SuppID:parseInt(supplierInput[0])
                         }
                     }; 
 
                     console.log("reqData > ",reqData);
-                    /*
+                     
                     axios
-                    .post(APIURLS.APIURL.GetAllSupplier, reqData, { headers })
+                    .post(APIURLS.APIURL.Add_Update_GateEntry, reqData, { headers })
                     .then((response) => {
-                       
+                        console.log("response > ",response);
                     })
                     .catch((error) => {
-                       
+                        console.log("saveGateEntry > error > ",error);
                     });
-                    */
+                    
 
                 } catch (ex) {
                     
