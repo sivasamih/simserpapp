@@ -104,7 +104,9 @@ export default function App() {
           initialRouteName="Login"
           screenOptions={{
             headerStyle: {
-              backgroundColor: '#0072bc'
+              backgroundColor: '#0072bc',
+              elevation: 0,
+              shadowOpacity: 0
             },
             headerTintColor: '#fff',
             headerTitleStyle: styles.headerTitleStyle,
@@ -127,7 +129,7 @@ export default function App() {
             name="BranchDashboard"
             component={BranchDashboardScreen}
             headerTitleStyle={styles.headerTitleStyle}
-            options={({ route }) => ({ title: route.params.branchName + " - " + route.params.name })}
+            options={({ route }) => ({ title: route.params.branchName + " - " + route.params.name,headerShadowVisible: false })}
           />
 
           <Stack.Screen

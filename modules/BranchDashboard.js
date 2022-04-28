@@ -77,6 +77,48 @@ export default function BranchDashboard({ route, navigation }) {
         }, {
             title: "Stock In",
             screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
+        }, {
+            title: "Stock In",
+            screenPath: "Stock In"
         }
     ]);
 
@@ -126,18 +168,17 @@ export default function BranchDashboard({ route, navigation }) {
 
             <SafeAreaView>
                 <ScrollView style={{ backgroundColor: '#F5F5F5' }}>
-                    <View style={styles.container}>    
-                         
+                    <View style={styles.container}>
+
                         <View style={styles.welcomeWrapper}>
 
-                            <View style={{width:'50%'}}>
-                             <Text>Dashboard</Text>
+                            <View style={{ width: '70%' }}>
+                                <View style={{ marginLeft: -50, marginTop: 20 }}>
+                                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#fff' }}>Dashboard</Text>
+                                    <Text style={{ fontSize: 18, color: '#cddc39' }}>{sessionData.head ? "Hi " + sessionData.head.firstName : "Hi"}</Text>
+                                </View>
                             </View>
-                            <View style={{width:'50%'}}>
-                             <Text>Dashboard</Text>
-                            </View>
-                            
-                        </View>   
+                        </View>
 
                         <View style={styles.controlSpace}>
                             {menuList.map((item, i) => (
@@ -204,13 +245,14 @@ const styles = StyleSheet.create({
         height: 80,
         padding: 8,
     },
-    welcomeWrapper:{
+    welcomeWrapper: {
         flexDirection: 'row',
-        marginLeft:20,
-        alignContent:'flex-end'
+        marginLeft: 20,
+        alignContent: 'flex-end',
+        marginBottom: -50
     },
     controlSpace: {
-        paddingTop:30,
+        paddingTop: 30,
         flexDirection: 'row',
         flexWrap: 'wrap',
         backgroundColor: '#F5F5F5',

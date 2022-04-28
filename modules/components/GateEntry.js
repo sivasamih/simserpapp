@@ -54,6 +54,7 @@ const headers = {
   
 
 export default function GateEntry({ route, navigation }) {
+    const [sessionData, setSessionData] = useState({});
     const [branchID, setBranchID] = useState(0);
     const [index, setIndex] = useState(0);
     const [routes] = useState([
@@ -67,8 +68,8 @@ export default function GateEntry({ route, navigation }) {
     useEffect(() => {
         console.log("---------------------------------------------------------");
         console.log("route > ", route);
-        console.log("route.params.params.branchID > ", route.params.params.branchID);
       try{
+        getSessionData();     
         setBranchID(parseInt(route.params.params.branchID)); 
       }catch(ex){}
         
@@ -118,6 +119,15 @@ export default function GateEntry({ route, navigation }) {
 
     }, []);
 
+    const getSessionData = async () => {
+        try {
+            const sessionData = await REUSABLES.getStoredSessionData();
+            setSessionData(sessionData);
+        } catch (ex) {
+            console.log("-------> getSessionData ex > ", ex);
+        }
+    }
+
     const updateInput = (inputValue) => {
         console.log("updateInput > ",inputValue);
       };
@@ -148,7 +158,7 @@ export default function GateEntry({ route, navigation }) {
         const [supplierInput, setSupplierInput] = useState([]);
         const [supplierList, setSupplierList] = useState([]);
 
-        const [loaderStatus, setLoaderStatus] = useState(false);
+        const [loaderStatus, setLoaderStatus] = useState(true);
         const [alertBarStatus, setAlertBarStatus] = useState(false);
         const [alertBarMessage, setAlertBarMessage] = useState(null);
 
@@ -178,7 +188,6 @@ export default function GateEntry({ route, navigation }) {
         const getSuppliers=async()=>{
             const validUser=await getValidUserData();
             console.log("supplierList > validUser > ",validUser);
-            // const res = await FETCHAPI.APICALL(APIURLS.APIURL.GetAllSupplier,validUser, headers);
             let reqData={
                 ValidUser: validUser,
                 Supplier: {
@@ -192,8 +201,7 @@ export default function GateEntry({ route, navigation }) {
               console.log("getSuppliers > response > ",response);
                 try {
                     let data = response.data;
-                    let Branch = data.Branch[0];
-
+                    let Branch = data.Branch[0];                    
                     let supplierData = data.Supplier;
                     let supplierList = [];
                     for (let supplier of supplierData) {
@@ -205,6 +213,7 @@ export default function GateEntry({ route, navigation }) {
                     console.log("supplierList > ", supplierList);
                     setSupplierList(supplierList);
                     setBranch(Branch);
+                    setLoaderStatus(false);
                 } catch (ex) { }  
               
             })
