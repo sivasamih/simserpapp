@@ -158,7 +158,7 @@ export default function GateEntry({ route, navigation }) {
         const [supplierInput, setSupplierInput] = useState([]);
         const [supplierList, setSupplierList] = useState([]);
 
-        const [loaderStatus, setLoaderStatus] = useState(true);
+        const [loaderStatus, setLoaderStatus] = useState(false);
         const [alertBarStatus, setAlertBarStatus] = useState(false);
         const [alertBarMessage, setAlertBarMessage] = useState(null);
 
@@ -266,9 +266,12 @@ export default function GateEntry({ route, navigation }) {
                         UserID:sessionData.head.userID,
                         Token:sessionData.head.token
                     }
+                    console.log("branch > ",branch);
+                    console.log("branch.GENo > ",branch.GENo);
                     let reqData={
                         validUser:validUser,
                         GateEntry:{
+                            NoSeriesID:parseInt(branch.GENo),  
                             GEID :0,
                             No  :"",
                             EntryDate  :selectedEntryDate,

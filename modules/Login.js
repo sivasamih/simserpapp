@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     },
     loginTextWrapper: {
         marginLeft: 55,
-        marginBottom: 20
+        // marginBottom: 20
     },
     loginText: {
         color: '#0072bc',
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
         lineHeight: 40,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
-        padding: 10,
+        paddingLeft:10
     },
 
     forgot_button: {

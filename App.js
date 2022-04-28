@@ -116,14 +116,16 @@ export default function App() {
           <Stack.Screen
             name="Login"
             component={LoginScreen}
-            options={{ headerShown: false }}
-            // options={{
-            //   headerTitle: (props) => <>
-            //     <Image style={styles.image} source={require("./assets/icons/smiley.png")} />
-            //     <Text style={styles.customTitle}>{" "}{greeting}</Text>
-            //   </>
+            // options={{ headerShown: true }}
+            options={{
+              headerTitle: (props) => <>
+                {/* <Image style={styles.image} source={require("./assets/icons/smiley.png")} /> */}
+                <Text style={styles.customTitle}>
+                  {" "}{greeting}
+                  </Text>
+              </>
               
-            // }}
+            }}
             
           />
 
