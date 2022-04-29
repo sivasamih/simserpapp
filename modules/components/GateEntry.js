@@ -27,8 +27,6 @@ import * as FETCHAPI from '../helpers/fetchapi';
 import * as REUSABLES from '../helpers/reusables';
 
 const today = moment().format("YYYY-MM-DD");
-
-//  const currentTime = moment().format('LT');
 const currentTime = moment().format("HH:mm");
 
 
@@ -94,7 +92,7 @@ export default function GateEntry({ route, navigation }) {
         }
     }
 
-    const getGateEntryList=()=>{
+    const getGateEntryList=async()=>{
         const gateEntryList = [
             {
                 id: 1,
@@ -133,7 +131,31 @@ export default function GateEntry({ route, navigation }) {
                 time: "10:30AM"
             },
         ];
-        setGateEntryList(gateEntryList);
+
+        const sessionData = await REUSABLES.getStoredSessionData();
+        let reqData = {
+            validUser: {
+                UserID: sessionData.head.userID,
+                Token: sessionData.head.token
+            },
+            branchID: branchID,
+            date: today
+        };
+
+        try {
+            axios
+                .post("", reqData, { headers })
+                .then((response) => {
+                    console.log("response > ", response);
+                    setGateEntryList(gateEntryList);
+                })
+                .catch((error) => {
+                    console.log("getGateEntryList > error > ", error);
+                });
+        } catch (ex) { }
+
+
+       
     }
 
     const updateInput = (inputValue) => {
@@ -291,7 +313,8 @@ export default function GateEntry({ route, navigation }) {
                             Name:driverName,
                             RefNo:refNo,
                             DeliverTo:deliverTo,
-                            SuppID:parseInt(isNaN(supplierInput[0])?0:supplierInput[0])
+                            SuppID:parseInt(isNaN(supplierInput[0])?0:supplierInput[0]),
+                            BranchID:branchID
                         }
                     }; 
 
