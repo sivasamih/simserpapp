@@ -7,10 +7,10 @@ import {
 import {Snackbar  } from 'react-native-paper';
 
 
-export default function AlertBar({ status, message,onDismissSnackBar }) {
+export default function AlertBar({ status, message,onDismissSnackBar,backgroundColor }) {
     return (
         <Snackbar
-        style={styles.snackbar}
+            style={[styles.snackbar,{snackbar:backgroundColor}]}
             visible={status}
             onDismiss={onDismissSnackBar}
             action={{
@@ -30,8 +30,9 @@ const styles = StyleSheet.create({
         marginTop: -50,
         alignItems: 'center'
     },
-    snackbar:{
-        backgroundColor:'#ffab40',
-    }
+    
+    // {
+    //     backgroundColor:'#ffab40',
+    // }
 
 });

@@ -28,7 +28,9 @@ import * as REUSABLES from '../helpers/reusables';
 
 const today = moment().format("YYYY-MM-DD");
 
-const currentTime = moment().format('LT');
+//  const currentTime = moment().format('LT');
+const currentTime = moment().format("HH:mm");
+
 
 const headers = {
     "Content-Type": "application/json",
@@ -53,6 +55,8 @@ const headers = {
 
   
 
+  
+
 export default function GateEntry({ route, navigation }) {
     const [sessionData, setSessionData] = useState({});
     const [branchID, setBranchID] = useState(0);
@@ -61,20 +65,36 @@ export default function GateEntry({ route, navigation }) {
         { key: 'section1', title: 'Take Entry', icon: 'boom-gate' },
         { key: 'section2', title: 'Details', icon: 'gate-arrow-right' },
     ]);
+    
     const [gateEntryList, setGateEntryList] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState('2022-04-02');
+    const [selectedDate, setSelectedDate] = useState(today);
 
     useEffect(() => {
-        console.log("---------------------------------------------------------");
-        console.log("route > ", route);
+        // console.log("---------------------------------------------------------");
+        // console.log("route > ", route);
       try{
         getSessionData();     
         setBranchID(parseInt(route.params.params.branchID)); 
       }catch(ex){}
         
 
-        console.log("---------------------------------------------------------");
+        // console.log("---------------------------------------------------------");
+       
+
+    }, []);
+
+
+    const getSessionData = async () => {
+        try {
+            const sessionData = await REUSABLES.getStoredSessionData();
+            setSessionData(sessionData);
+        } catch (ex) {
+            // console.log("-------> getSessionData ex > ", ex);
+        }
+    }
+
+    const getGateEntryList=()=>{
         const gateEntryList = [
             {
                 id: 1,
@@ -114,30 +134,18 @@ export default function GateEntry({ route, navigation }) {
             },
         ];
         setGateEntryList(gateEntryList);
-
-
-
-    }, []);
-
-    const getSessionData = async () => {
-        try {
-            const sessionData = await REUSABLES.getStoredSessionData();
-            setSessionData(sessionData);
-        } catch (ex) {
-            console.log("-------> getSessionData ex > ", ex);
-        }
     }
 
     const updateInput = (inputValue) => {
-        console.log("updateInput > ",inputValue);
+        // console.log("updateInput > ",inputValue);
       };
 
       const handleChange = (e) => {
-        console.log("handleChange > e > ",e);
+        // console.log("handleChange > e > ",e);
       };
 
     const viewGateEntryList = () => {
-        console.log("In viewGateEntryList");
+        // console.log("In viewGateEntryList");
         setModalVisible(true);
     }
 
@@ -145,7 +153,7 @@ export default function GateEntry({ route, navigation }) {
         const [showDatePopUp, setShowDatePopUp] = useState(false);
         const [dateTimeMode, setdateTimeMode] = useState(null);
         const [entryDate, setEntryDate] = useState(new Date());
-        const [entryTime, setEntryTime] = useState(new Date());        
+        const [entryTime, setEntryTime] = useState(currentTime);        
         const [selectedEntryDate, setSelectedEntryDate] = useState(today);
         const [selectedEntryTime, setSelectedEntryTime] = useState(currentTime);
         const [documentType, setDocumentType] = useState('');
@@ -165,7 +173,7 @@ export default function GateEntry({ route, navigation }) {
         const onDismissSnackBar = () => setAlertBarStatus(false);
 
         useEffect(() => {    
-            console.log("$$$$$ GateEntrySection > branchID > ",branchID); 
+            // console.log("$$$$$ GateEntrySection > branchID > ",branchID); 
             const ac = new AbortController();       
             getSuppliers();
 
@@ -187,7 +195,7 @@ export default function GateEntry({ route, navigation }) {
 
         const getSuppliers=async()=>{
             const validUser=await getValidUserData();
-            console.log("supplierList > validUser > ",validUser);
+            // console.log("supplierList > validUser > ",validUser);
             let reqData={
                 ValidUser: validUser,
                 Supplier: {
@@ -198,7 +206,7 @@ export default function GateEntry({ route, navigation }) {
             axios
             .post(APIURLS.APIURL.GetSuppliersByBranchID, reqData, { headers })
             .then((response) => {
-              console.log("getSuppliers > response > ",response);
+            //   console.log("getSuppliers > response > ",response);
                 try {
                     let data = response.data;
                     let Branch = data.Branch[0];                    
@@ -210,7 +218,7 @@ export default function GateEntry({ route, navigation }) {
                             name: supplier.Name
                         });
                     }
-                    console.log("supplierList > ", supplierList);
+                    // console.log("supplierList > ", supplierList);
                     setSupplierList(supplierList);
                     setBranch(Branch);
                     setLoaderStatus(false);
@@ -218,7 +226,7 @@ export default function GateEntry({ route, navigation }) {
               
             })
             .catch((error) => {
-                console.log("supplierList > error > ",error);
+                // console.log("supplierList > error > ",error);
             });
             
         }
@@ -233,7 +241,8 @@ export default function GateEntry({ route, navigation }) {
                     setSelectedEntryDate(moment(currentDate).format("YYYY-MM-DD"));
                     break;
                 case "time":
-                    setSelectedEntryTime(moment(currentDate).format('LT'));
+                    // setSelectedEntryTime(moment(currentDate).format('LT'));
+                    setSelectedEntryTime(moment(currentDate).format('HH:mm'));
                     break;
                 default:
                     break;
@@ -268,25 +277,26 @@ export default function GateEntry({ route, navigation }) {
                     }
                     console.log("branch > ",branch);
                     console.log("branch.GENo > ",branch.GENo);
+
                     let reqData={
                         validUser:validUser,
                         GateEntry:{
                             NoSeriesID:parseInt(branch.GENo),  
                             GEID :0,
                             No  :"",
-                            EntryDate  :selectedEntryDate,
+                            EntryDate  :moment(selectedEntryDate).format("YYYY-MM-DD"),
                             EntryTime :selectedEntryTime,
-                            DocumentType:parseInt(documentType),
+                            DocumentType:isNaN(parseInt(documentType))?0:parseInt(documentType),
                             VehicleNo:vehicleNo,
                             Name:driverName,
                             RefNo:refNo,
                             DeliverTo:deliverTo,
-                            SuppID:parseInt(supplierInput[0])
+                            SuppID:parseInt(isNaN(supplierInput[0])?0:supplierInput[0])
                         }
                     }; 
 
                     console.log("reqData > ",reqData);
-                     
+                   
                     axios
                     .post(APIURLS.APIURL.Add_Update_GateEntry, reqData, { headers })
                     .then((response) => {
@@ -327,7 +337,7 @@ export default function GateEntry({ route, navigation }) {
         return (
             <>
 
-                <FullScreenLoader status={loaderStatus} />
+                <FullScreenLoader status={loaderStatus} backgroundColor='red'/>
                 <AlertBar status={alertBarStatus} message={alertBarMessage} onDismissSnackBar={onDismissSnackBar} />
 
                 {showDatePopUp && (
@@ -335,6 +345,8 @@ export default function GateEntry({ route, navigation }) {
                         style={styles.dateSelector}
                         mode={dateTimeMode}
                         value={entryDate}
+                        // dateFormat="longtime"
+                        is24Hour={true}
                         onChange={onChange} />
                 )}
                 <View style={styles.container}>
@@ -347,7 +359,7 @@ export default function GateEntry({ route, navigation }) {
                                     <View style={styles.rowBox}>
                                         <View style={styles.col6}>
                                             <TextInput
-                                               style={styles.textInput}
+                                                style={styles.textInput}
                                                 placeholder="Select Date"
                                                 selectionColor={null}
                                                 underlineColor={null}
@@ -368,6 +380,7 @@ export default function GateEntry({ route, navigation }) {
                                                 value={selectedEntryTime}
                                                 disabled={true}
                                                 right={<TextInput.Icon onPress={(e) => showMode('time')} name="update" />}
+                                               
                                             />
                                         </View>
                                     </View>
@@ -481,73 +494,86 @@ export default function GateEntry({ route, navigation }) {
     }
   
 
-    const GateEntryStats = () => <>
-        <ModalComponent
-            title={"Gate Entries on " + selectedDate}
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            modalContent={
-                <>
-                    {gateEntryList.length > 0 ? gateEntryList.map((item, i) => (
-                        <List.Item
-                            key={"GE_" + item.title + i}
-                            title={item.title}
-                            description={item.desc + " | " + item.time}
-                            left={props => <List.Icon {...props} icon="package-variant-closed" />}
-                        />
-                    )) : (
-                        <List.Item
-                            key={"GE_" + item.title}
-                            title="No Entry"
-                            description=""
-                            left={props => <List.Icon {...props} icon="package-variant-closed" />}
-                        />
-                    )}
-                </>
-            }
-        />
-        <View style={styles.container}>
-            <View style={styles.marginLeftRight5}>
-                <CalenderComponent selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-                <View style={{ height: 20 }}></View>
-                <SectionComponent title="Details" />
-                <SafeAreaView>
-                    <ScrollView>
-                        <View style={{ marginLeft: 20 }}>
-                            {gateEntryList.length > 0 ? (
+    const GateEntryStats = () => {
+        const [selectedCalenderDate, setSelectedCalenderDate] = useState(today);
+        
+
+        const processCalenderDate=(date)=>{
+            console.log("processCalenderDate > date > ",date);
+            setSelectedCalenderDate(date);
+        }
+
+        return (
+            <>
+                <ModalComponent
+                    title={"Gate Entries on " + selectedCalenderDate}
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                    modalContent={
+                        <>
+                            {gateEntryList.length > 0 ? gateEntryList.map((item, i) => (
                                 <List.Item
-                                    title={"Total " + gateEntryList.length + " entries available"}
-                                    description=""
+                                    key={"GE_" + item.title + i}
+                                    title={item.title}
+                                    description={item.desc + " | " + item.time}
                                     left={props => <List.Icon {...props} icon="package-variant-closed" />}
-                                    right={props => (
-                                        <>
-                                            <IconButton
-                                                icon="eye"
-                                                color="#0072bc"
-                                                size={20}
-                                                onPress={() => viewGateEntryList()}
-                                            />
-                                        </>
-                                    )}
                                 />
-                            ) : (
+                            )) : (
                                 <List.Item
+                                    key={"GE_" + item.title}
                                     title="No Entry"
                                     description=""
                                     left={props => <List.Icon {...props} icon="package-variant-closed" />}
                                 />
                             )}
+                        </>
+                    }
+                />
+                <View style={styles.container}>
+                    <View style={styles.marginLeftRight5}>
+                        <CalenderComponent selectedDate={selectedCalenderDate} setSelectedDate={processCalenderDate} />
+                        <View style={{ height: 20 }}></View>
+                        <SectionComponent title="Details" />
+                        <SafeAreaView>
+                            <ScrollView>
+                                <View style={{ marginLeft: 20 }}>
+                                    {gateEntryList.length > 0 ? (
+                                        <List.Item
+                                            title={"Total " + gateEntryList.length + " entries available"}
+                                            description=""
+                                            left={props => <List.Icon {...props} icon="package-variant-closed" />}
+                                            right={props => (
+                                                <>
+                                                    <IconButton
+                                                        icon="eye"
+                                                        color="#0072bc"
+                                                        size={20}
+                                                        onPress={() => viewGateEntryList()}
+                                                    />
+                                                </>
+                                            )}
+                                        />
+                                    ) : (
+                                        <List.Item
+                                            title="No Entry"
+                                            description=""
+                                            left={props => <List.Icon {...props} icon="package-variant-closed" />}
+                                        />
+                                    )}
 
 
 
-                        </View>
-                    </ScrollView>
-                </SafeAreaView>
+                                </View>
+                            </ScrollView>
+                        </SafeAreaView>
 
 
-            </View>
-        </View>
-    </>;
+                    </View>
+                </View>
+            </>
+        )
+    }
+ 
 
 
     return (
