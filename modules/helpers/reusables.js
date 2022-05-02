@@ -18,3 +18,12 @@ export const getStoredSessionData = async () => {
         console.log("-------> ERROR IN reusables > getStoredSessionData > e > ", e);
     }
   }  
+
+  export const getStoredSessionDataBykey = async (key) => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(key)
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch(e) {
+        console.log("-------> ERROR IN reusables > getStoredSessionDataBykey > e > ", e);
+    }
+  }  

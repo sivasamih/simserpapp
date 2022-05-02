@@ -214,6 +214,7 @@ export default function GateEntry({ route, navigation }) {
             }
             return validUser;
         }
+        
 
         const getSuppliers=async()=>{
             const validUser=await getValidUserData();

@@ -21,6 +21,7 @@ Notifications.setNotificationHandler({
 import Login from './modules/Login';
 import BranchDashboard from './modules/BranchDashboard';
 import GateEntry from "./modules/components/GateEntry";
+import * as REUSABLES from './modules/helpers/reusables';
 
 
 // import Barcodescanner from './modules/Barcodescanner';
@@ -52,13 +53,17 @@ export default function App() {
 
   
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-    Notifications.addNotificationReceivedListener(this._handleNotification);
+
+    try{
+      registerForPushNotificationsAsync().then(token => {
+        setExpoPushToken(token);
+        setNotifyToken(token); 
+      });
+      Notifications.addNotificationReceivedListener(this._handleNotification);
+      Notifications.addNotificationResponseReceivedListener(this._handleNotificationResponse);
+      initializeGreeting();
+    }catch(ex){}
     
-    Notifications.addNotificationResponseReceivedListener(this._handleNotificationResponse);
-
-
-    initializeGreeting();
   }, []);
 
   const handleNotification = notification => {
@@ -95,6 +100,14 @@ export default function App() {
       }
     }
     setGreeting(greetings);
+  }
+
+  const setNotifyToken = async (token) => {
+    try {
+      REUSABLES.storeSessionData('notifyToken', token);
+    } catch (ex) {
+      console.log("-------> setNotifyToken ex > ", ex);
+    }
   }
 
   return (

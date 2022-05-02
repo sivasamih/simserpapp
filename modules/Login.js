@@ -34,6 +34,13 @@ export default function Login({ navigation }) {
             setSessionData({});
         }
         getSessionData();
+
+        if(sessionData && sessionData !== {}){
+            if(sessionData.head){
+                getNotifyToken();
+            }
+        }
+       
     }, []);
 
     const processLogin = async () => {
@@ -85,9 +92,19 @@ export default function Login({ navigation }) {
     const getSessionData = async () => {
         try {
             const sessionData = await REUSABLES.getStoredSessionData();
+            console.log("-------> getSessionData sessionData > ", sessionData);
             setSessionData(sessionData);
         } catch (ex) {
             console.log("-------> getSessionData ex > ", ex);
+        }
+    }
+
+    const getNotifyToken = async () => {
+        try {
+            const sessionData = await REUSABLES.getStoredSessionDataBykey('notifyToken');
+            console.log("-------> getNotifyToken sessionData > ", sessionData);
+        } catch (ex) {
+            console.log("-------> getNotifyToken ex > ", ex);
         }
     }
 
