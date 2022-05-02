@@ -10,6 +10,8 @@ const Stack = createNativeStackNavigator();
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
+
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
       shouldShowAlert: true,
@@ -51,9 +53,11 @@ export default function App() {
   const [greeting, setGreeting] = useState("Hi! ");
   const [expoPushToken, setExpoPushToken] = useState('');
 
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
   
   useEffect(() => {
-
+   
+     console.log("lastNotificationResponse > ",lastNotificationResponse);
     try{
       registerForPushNotificationsAsync().then(token => {
         setExpoPushToken(token);

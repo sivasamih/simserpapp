@@ -35,7 +35,7 @@ export default function Login({ navigation }) {
         }
         getSessionData();
 
-        if(sessionData && sessionData !== {}){
+        if(sessionData && (sessionData !== {} || sessionData !==null) ){
             if(sessionData.head){
                 getNotifyToken();
             }
@@ -137,7 +137,7 @@ export default function Login({ navigation }) {
 
     return (
         <>
-            {sessionData && sessionData !== {} ? sessionData.head ? (
+            {sessionData && (sessionData !== {} || sessionData !==null) ? sessionData.head ? (
                 <>
                     <View style={styles.container2}>
                         <CompanyList key="companyList" sessionData={sessionData} logout={logout} openBranchDashboard={openBranchDashboard} />
@@ -151,7 +151,7 @@ export default function Login({ navigation }) {
                         borderBottomLeftRadius: 250,
                     }}>
                         <View style={{ marginTop: 80, alignItems: 'center' }}>
-                            <Image style={styles.image} source={require("../assets/B1.png")} />
+                            <Image style={styles.image} source={require("../assets/B1-old.png")} />
                         </View>
                     </View>
                     <View style={styles.loginTextWrapper}>
@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
         marginBottom: 40,
         width: '70%',
         height: 70,
+        resizeMode: 'stretch',
     },
     image2: {
         marginBottom: 40,
