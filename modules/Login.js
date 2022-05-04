@@ -35,12 +35,11 @@ export default function Login({ navigation }) {
         }
         getSessionData();
         getNotifyToken();
-
         if(sessionData && (sessionData !== {} || sessionData !==null) ){
             if(sessionData.head){
-              //  getNotifyToken();
+              // getNotifyToken();
             }
-        }
+        } 
        
     }, []);
 
@@ -71,10 +70,16 @@ export default function Login({ navigation }) {
                     if (res.status === true) {
                         let data = await res.data;
                         if (data.head) {
+                            const validUser={
+                                UserID:data.head.userID,
+                                Token:data.head.token
+                            }
                             if (data.head.status !== "UU") {
                                 REUSABLES.storeSessionData('sessionData', await res.data);
                                 getSessionData();
                                 setLoaderStatus(false);
+                                const notifyToken = await REUSABLES.getStoredSessionDataBykey('notifyToken');
+                                updateUserTokenAfterLogin(notifyToken,validUser);
                             } else {
                                 setPassword(null);
                                 setLoaderStatus(false);
@@ -103,8 +108,9 @@ export default function Login({ navigation }) {
     const getSessionData = async () => {
         try {
             const sessionData = await REUSABLES.getStoredSessionData();
-            console.log("-------> getSessionData sessionData > ", sessionData);
+            // console.log("-------> getSessionData sessionData > ", sessionData);
             setSessionData(sessionData);
+             
         } catch (ex) {
             console.log("-------> getSessionData ex > ", ex);
         }
@@ -120,8 +126,6 @@ export default function Login({ navigation }) {
         }
     }
 
-
-
     const updateUserToken=async(notifyToken)=>{
         try{
             console.log("------- IN updateUserToken------");
@@ -135,7 +139,20 @@ export default function Login({ navigation }) {
         }catch(ex){
             console.log("-------> updateUserToken ex > ", ex);
         }
-        
+    }
+
+    const updateUserTokenAfterLogin=async(notifyToken,validUser)=>{
+        try{
+            console.log("------- IN updateUserToken------");
+            const res = await FETCHAPI.APICALL(APIURLS.APIURL.UserNotificationTokenUpdate, {
+                ValidUser: validUser,
+                UserID:validUser.UserID,
+                NotificationToken:notifyToken
+            }, headers);
+            console.log("-------> updateUserToken res > ", res);
+        }catch(ex){
+            console.log("-------> updateUserToken ex > ", ex);
+        }
     }
 
     const logout = async () => {

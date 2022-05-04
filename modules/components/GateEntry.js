@@ -6,6 +6,7 @@ import {
     SafeAreaView,
     ScrollView,
     TouchableOpacity,
+    LogBox 
 } from "react-native";
 import axios from "axios";
 
@@ -69,6 +70,7 @@ export default function GateEntry({ route, navigation }) {
     const [selectedDate, setSelectedDate] = useState(today);
 
     useEffect(() => {
+        LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
         // console.log("---------------------------------------------------------");
         // console.log("route > ", route);
       try{
@@ -153,9 +155,6 @@ export default function GateEntry({ route, navigation }) {
                     console.log("getGateEntryList > error > ", error);
                 });
         } catch (ex) { }
-
-
-       
     }
 
     const updateInput = (inputValue) => {

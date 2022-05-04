@@ -28,10 +28,10 @@ const headers = {
 
 function MenuCard({ title, screenPath, route, navigation }) {
     const optionClicked = (input) => {
-        console.log("Clicking on  > ", input);
+        // console.log("Clicking on  > ", input);
         switch (input) {
             case "Gate Entry":
-                console.log("Clicking on  > route > ", route);
+                // console.log("Clicking on  > route > ", route);
                 navigation.navigate('GateEntry', route)
                 break;
             default:
