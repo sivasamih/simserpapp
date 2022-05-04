@@ -271,6 +271,7 @@ export const APIURL = {
   ContraPost:domain+"api/Accounts/ContraPost",
   GetGLLedgerEntryByBranchID:domain+"api/Accounts/GetGLLedgerEntryByBranchID",
   Add_Update_GateEntry:domain+"api/Common/Add_Update_GateEntry",
+  UserNotificationTokenUpdate:domain+"api/Users/UserNotificationTokenUpdate",
 
   E_GST:{
     GetToken:"https://gstsandbox.charteredinfo.com/eivital/dec/v1.04/auth",

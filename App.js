@@ -57,7 +57,7 @@ export default function App() {
   
   useEffect(() => {
    
-     console.log("lastNotificationResponse > ",lastNotificationResponse);
+     //console.log("lastNotificationResponse > ",lastNotificationResponse);
     try{
       registerForPushNotificationsAsync().then(token => {
         setExpoPushToken(token);
@@ -71,11 +71,11 @@ export default function App() {
   }, []);
 
   const handleNotification = notification => {
-     console.log("_handleNotification > notification > ",notification);
+    // console.log("_handleNotification > notification > ",notification);
   };
 
   const handleNotificationResponse = response => {
-    console.log("_handleNotificationResponse > response > ",response);
+    //console.log("_handleNotificationResponse > response > ",response);
   };
 
   const initializeGreeting = () => {

@@ -34,14 +34,25 @@ export default function Login({ navigation }) {
             setSessionData({});
         }
         getSessionData();
+        getNotifyToken();
 
         if(sessionData && (sessionData !== {} || sessionData !==null) ){
             if(sessionData.head){
-                getNotifyToken();
+              //  getNotifyToken();
             }
         }
        
     }, []);
+
+    const getValidUserData=async()=>{
+        const sessionData = await REUSABLES.getStoredSessionData();
+        const token = sessionData.head.token;
+        let validUser={
+            UserID:sessionData.head.userID,
+            Token:sessionData.head.token
+        }
+        return validUser;
+    }
 
     const processLogin = async () => {
         try {
@@ -101,11 +112,31 @@ export default function Login({ navigation }) {
 
     const getNotifyToken = async () => {
         try {
-            const sessionData = await REUSABLES.getStoredSessionDataBykey('notifyToken');
-            console.log("-------> getNotifyToken sessionData > ", sessionData);
+            const notifyToken = await REUSABLES.getStoredSessionDataBykey('notifyToken');
+             updateUserToken(notifyToken);
+            console.log("-------> getNotifyToken notifyToken > ", notifyToken);
         } catch (ex) {
             console.log("-------> getNotifyToken ex > ", ex);
         }
+    }
+
+
+
+    const updateUserToken=async(notifyToken)=>{
+
+        try{
+            console.log("------- IN updateUserToken------");
+            const validUser=await getValidUserData();
+            const res = await FETCHAPI.APICALL(APIURLS.APIURL.UserNotificationTokenUpdate, {
+                ValidUser: validUser,
+                UserID:validUser.UserID,
+                NotificationToken:notifyToken
+            }, headers);
+            console.log("-------> updateUserToken res > ", res);
+        }catch(ex){
+            console.log("-------> updateUserToken ex > ", ex);
+        }
+        
     }
 
     const logout = async () => {
