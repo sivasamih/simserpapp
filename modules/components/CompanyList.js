@@ -34,7 +34,7 @@ export default function CompanyList({ sessionData, logout, openBranchDashboard }
                                 {sessionData.companies ? sessionData.companies.companyList ? sessionData.companies.companyList.map((company, i) => (
                                     <View key={"P_V_"+company.compID}>
                                         <List.Accordion 
-                                        id={"L_A_"+company.compName + "_" + i+"_ "+company.compID} 
+                                        id={"L_A_"+company.compName + "_" + i} 
                                         key={"L_A_"+company.compName + "_" + i+"_ "+company.compID} 
                                         style={styles.accordList} 
                                         titleStyle={styles.listTitleStyle} 
