@@ -123,7 +123,6 @@ export default function Login({ navigation }) {
 
 
     const updateUserToken=async(notifyToken)=>{
-
         try{
             console.log("------- IN updateUserToken------");
             const validUser=await getValidUserData();

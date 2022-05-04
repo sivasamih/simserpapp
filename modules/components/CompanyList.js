@@ -41,8 +41,7 @@ export default function CompanyList({ sessionData, logout, openBranchDashboard }
                                         title={company.compName} >
                                             <View key={"CompList-View-" + company.compName} style={styles.accordContentArea}>
                                                 {company.branchList ? company.branchList.map((branch, j) => (
-                                                    <>
-                                                   
+                                                    <>                                                   
                                                         <TouchableRipple key={"TR_" + company.compName + "_" + i + "_" + "_" + j} rippleColor="rgba(104, 143, 173)" onPress={() => openBranchDashboard(branch)} >
                                                             <List.Item key={"LITM_" + company.compName + branch.branchName + "_" + i + "_" + "_" + j} title={branch.branchName} titleStyle={styles.listItemTitleStyle} />
                                                         </TouchableRipple>
